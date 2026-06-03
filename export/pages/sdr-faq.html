@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SDR AI Worker — FAQ | EverWorker</title>
+<meta name="description" content="Frequently asked questions about the EverWorker SDR AI Worker: qualification, brand voice, deliverability, system access, and the 90-day rollout.">
+<style>
+  :root{
+    --bg:#ffffff;
+    --fg:#0a0a0a;
+    --muted:#525252;
+    --border:rgba(10,10,10,0.12);
+    --border-strong:rgba(10,10,10,0.18);
+    --accent:#22826F;
+    --accent-on:#ffffff;
+    --radius:9999px;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  body{font-family:'Gilroy','Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5}
+  .faq{padding:64px 24px 96px}
+  @media(min-width:640px){.faq{padding:96px 32px 160px}}
+  .faq-inner{max-width:56rem;margin:0 auto}
+  .faq-head{text-align:center;margin-bottom:48px;opacity:0;transform:translateY(16px);transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1)}
+  .faq-head.in{opacity:1;transform:none}
+  @media(min-width:640px){.faq-head{margin-bottom:64px}}
+  .faq-eyebrow{font-size:12px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 16px}
+  @media(min-width:640px){.faq-eyebrow{font-size:14px}}
+  .faq-title{font-size:30px;font-weight:700;letter-spacing:-0.02em;margin:0;color:var(--fg)}
+  @media(min-width:640px){.faq-title{font-size:48px}}
+  .faq-list{border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .faq-item{border-bottom:1px solid var(--border)}
+  .faq-item:last-child{border-bottom:none}
+  .faq-q{appearance:none;background:transparent;border:none;padding:24px 0;width:100%;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;text-align:left;cursor:pointer;font:inherit;color:inherit}
+  @media(min-width:640px){.faq-q{padding:28px 0}}
+  .faq-q-text{flex:1;font-size:16px;font-weight:600;line-height:1.35;color:var(--fg);transition:color .25s ease}
+  @media(min-width:640px){.faq-q-text{font-size:20px}}
+  .faq-q:hover .faq-q-text{color:var(--accent)}
+  .faq-icon{margin-top:4px;flex-shrink:0;width:32px;height:32px;border-radius:9999px;border:1px solid var(--border-strong);display:inline-flex;align-items:center;justify-content:center;background:var(--bg);color:rgba(10,10,10,0.7);transition:all .3s ease}
+  @media(min-width:640px){.faq-icon{width:36px;height:36px}}
+  .faq-q:hover .faq-icon{border-color:var(--accent);color:var(--accent)}
+  .faq-icon svg{width:16px;height:16px;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+  @media(min-width:640px){.faq-icon svg{width:20px;height:20px}}
+  .faq-item.open .faq-icon{background:var(--accent);border-color:var(--accent);color:var(--accent-on)}
+  .faq-item.open .faq-icon svg{transform:rotate(180deg)}
+  .faq-item.open .faq-q-text{color:var(--accent)}
+  .faq-a-wrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s cubic-bezier(.22,1,.36,1)}
+  .faq-item.open .faq-a-wrap{grid-template-rows:1fr}
+  .faq-a-inner{overflow:hidden}
+  .faq-a{margin:0;padding:0 64px 24px 0;font-size:14px;line-height:1.7;color:rgba(10,10,10,0.7)}
+  @media(min-width:640px){.faq-a{padding:0 96px 32px 0;font-size:16px}}
+</style>
+</head>
+<body>
+<section class="faq">
+  <div class="faq-inner">
+    <div class="faq-head" id="faqHead">
+      <p class="faq-eyebrow">Frequently asked</p>
+      <h2 class="faq-title">Questions, answered.</h2>
+    </div>
+    <div class="faq-list" id="faqList"></div>
+  </div>
+</section>
+<script>
+  const FAQ_ITEMS = [
+    {q:'What counts as a "qualified meeting"?',a:"You define it. Qualified is whatever combination of signal, ICP fit, persona match, and account context matters to your team. The criteria get encoded into the Worker during onboarding so the meetings booked match the bar your AEs would actually value rather than a volume target. The Worker books the meeting and logs it to the CRM, your team runs the meeting, and post-meeting qualification (did it convert to opportunity, was the buyer real) gets logged back to the same CRM and surfaces through the observability layer we configure with you."},
+    {q:"How does the Worker stay on brand?",a:"Through a brain architecture that runs one brain per persona you sell into. Each brain is grounded in your product specs, style guides, voice standards, and the documentation a human SDR would read, plus the proof points that matter for that specific persona. Writing rules and examples are built during onboarding and refined continuously through testing. A CRO at a logistics company and a Director of Demand Gen at a SaaS company do not get structurally similar emails, which is how quality holds across the contact base."},
+    {q:"How does the Worker decide who to reach and when?",a:"The Worker is signal-driven. Triggers (list-based or property-based) fire on configurable schedules and invoke the workflow, which runs a screening pass to block non-fit contacts and personal email addresses, routes the contact to the matching persona brain, runs intent classification against the contact and company properties, and writes the sequence. A trigger has to fire first, the contact has to clear screening, and the intent class determines what gets sent. Your CRM is the system of record throughout."},
+    {q:"How does the Worker protect our domain reputation?",a:"Your primary domain is never exposed to AI SDR sending volume. Sending runs on dedicated domains and mailboxes provisioned through a managed infrastructure layer, which carries the reputation footprint of the AI SDR work. Your corporate domain, the one your executives email from and the one that hosts your website, sits behind that infrastructure untouched. Even in the worst case where a sending domain is flagged, it is replaced from the buffer pool with no blast radius back to the brand."},
+    {q:"Will this replace our SDRs?",a:"No. The Worker is built to multiply the throughput of the team you have, not substitute for it. Your SDRs spend more time in qualified conversations and less time in research and copywriting. Your AEs spend more time on deals and less time prospecting to fill their own pipeline. The customers who frame this internally as a replacement get a comp-plan revolt and a quality problem; the ones who frame it as an extension of capacity get the lift."},
+    {q:"How is this different from the AI SDR tools we've already evaluated?",a:"Most vertical AI SDR tools ship a single hosted instruction set running over a hosted knowledge base, charge per credit at a 5x to 10x markup over the underlying LLM cost, and leave the customer to reconcile the output against their own CRM. The architecture here is different. The Worker runs one brain per persona against your CRM and your instruction set rather than a hosted single-tenant model. Pricing is transparent against a published Phase 1 contract rather than a credit schedule you cannot audit. The 90-day services engagement is included, which is the work the credit-based vendors typically hand back to you and call it self-service."},
+    {q:"What system access does the Worker need?",a:"The Worker needs access to your CRM and your sequencing tool, with permissions to read and write records and to send on the dedicated mailboxes provisioned for the engagement. The CRM is the system of record, and the Worker reads from and writes back to it continuously. Beyond those baseline requirements, scoped permissions, system-specific user rights, and access controls are worked through during implementation with your security and IT teams."},
+    {q:"What does the first 90 days look like?",a:"Phase 1 implementation, with services included. The first weeks cover infrastructure setup, knowledge engine population from your content, instruction set tuning, persona brain configuration, and CRM workflow wiring. The remaining time is co-iteration with the services team alongside your RevOps lead to validate output against your ICP, refine the writing rules, and tune the trigger configuration based on early performance. If the Worker isn't producing meetings that meet your bar by the end of the engagement, we part ways."},
+    {q:"Does the Worker cover outbound and inbound SDR work?",a:"Both. The architecture is the same on either side, just different triggers. Outbound runs against account-level signals (technographic, news, hiring, intent and ABM) and contact-level marketing signals. Inbound runs the same workflow when a marketing signal fires (form fill, demo request, lead score crossing threshold), routing the contact to the matching persona brain so the follow-up is calibrated to where the buyer is in their evaluation. Two add-ons extend inbound further. The Email Reply AI SDR triages replies in seconds, and the Web Chat AI SDR captures site traffic and books meetings from your website directly."},
+    {q:"Does this replace our CRM?",a:"No. Your CRM stays the system of record throughout. The Worker reads from your contact and company objects, writes activity back to those same records, and updates the SDR status field on every contact it touches. If the data isn't in your CRM, the Worker doesn't know about it, which is by design. The integration runs on top of your existing CRM instance, with no parallel database to maintain."},
+    {q:"Does this come with built-in contact data providers?",a:"Not in Phase 1. The first installation runs against the contacts and signals already in your CRM, however imperfect. Contact enrichment via direct API to providers like Apollo, People Data Labs, Clay, Lusha, and Prospeo is added in Phase 3, after the Phase 1 architecture is operational. The reason we sequence it that way is operational. Enrichment populates contacts that need a working execution layer to prosecute, and the execution layer is what Phase 1 builds."},
+    {q:"What if our CRM data needs cleanup first?",a:"Few customers are ready in the way they imagine they need to be. Phase 1 explicitly works against the existing signal set and the contacts already in your CRM, however imperfect. The 90-day services engagement includes the operational tightening that makes Phase 2, Phase 3, and Phase 4 productive over time. Waiting until the CRM is clean is the reason most CROs cite for never starting; the path forward starts with what's already there."},
+    {q:"What AI Workers should I onboard next?",a:"Phase 2 extends the SDR Worker with the LinkedIn AI SDR (sequencing on the channel buyers actually open), the Web Chat AI SDR (booking meetings from your website directly), and the Email Reply AI SDR (speed-to-lead on reply triage). These three increase yield from the Phase 1 implementation already in place. Phase 3 adds direct-API contact enrichment so accounts triggering your signals get populated with the right buying-group contacts automatically. Phase 4 adds account-level signal enrichment (technographic, news, hiring) and website deanonymization, which closes the loop into a fully orchestrated signal-to-meeting system. The sequence is prescriptive because the prior phase is what makes the next phase work; built out of order, the upgrades degrade the system."}
+  ];
+  const CHEV = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+  const list = document.getElementById('faqList');
+  let openIdx = 0;
+  FAQ_ITEMS.forEach((item, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'faq-item' + (i === openIdx ? ' open' : '');
+    wrap.innerHTML = `
+      <button class="faq-q" type="button" aria-expanded="${i===openIdx}">
+        <span class="faq-q-text"></span>
+        <span class="faq-icon">${CHEV}</span>
+      </button>
+      <div class="faq-a-wrap"><div class="faq-a-inner"><p class="faq-a"></p></div></div>`;
+    wrap.querySelector('.faq-q-text').textContent = item.q;
+    wrap.querySelector('.faq-a').textContent = item.a;
+    wrap.querySelector('.faq-q').addEventListener('click', () => {
+      const items = list.querySelectorAll('.faq-item');
+      const wasOpen = wrap.classList.contains('open');
+      items.forEach(el => { el.classList.remove('open'); el.querySelector('.faq-q').setAttribute('aria-expanded','false'); });
+      if (!wasOpen) { wrap.classList.add('open'); wrap.querySelector('.faq-q').setAttribute('aria-expanded','true'); }
+    });
+    list.appendChild(wrap);
+  });
+  // Reveal animation
+  const head = document.getElementById('faqHead');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { head.classList.add('in'); io.disconnect(); } });
+  }, { rootMargin: '-80px' });
+  io.observe(head);
+</script>
+</body>
+</html>

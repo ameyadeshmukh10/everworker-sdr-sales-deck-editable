@@ -1,0 +1,515 @@
+<!--
+  templateType: page
+  isAvailableForNewContent: true
+  label: EverWorker Homepage
+  screenshotPath: ../images/homepage-preview.png
+-->
+<!--
+  SETUP INSTRUCTIONS:
+  ===================
+  1. Upload this file to your HubSpot Design Manager under a theme folder
+     (e.g., /everworker/templates/homepage.html)
+  
+  2. Upload the following images to /everworker/images/ in Design Manager:
+     - headshot-sarah.jpg
+     - headshot-marcus.jpg  
+     - headshot-priya.jpg
+  
+  3. Upload Gilroy font files to /everworker/fonts/ in Design Manager:
+     - Gilroy-Light.ttf, Gilroy-Regular.ttf, Gilroy-Medium.ttf,
+       Gilroy-SemiBold.ttf, Gilroy-Bold.ttf, Gilroy-Black.ttf, Gilroy-Heavy.ttf
+     Then update the @font-face URLs below to use:
+     {{ get_asset_url('../fonts/Gilroy-Bold.ttf') }}
+  
+  4. If using a base layout (header/footer), switch to {% extends %} syntax.
+     This template is standalone — it includes standard_header/footer_includes.
+  
+  5. Create a new page in HubSpot and select "EverWorker Homepage" as the template.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ content.html_title }}</title>
+<meta name="description" content="{{ content.meta_description }}">
+{{ standard_header_includes }}
+<style>
+
+/* ===== Reset & Base ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--background:60 10% 98%;--foreground:240 10% 6%;
+--card:0 0% 100%;--card-foreground:240 10% 6%;
+--primary:240 10% 6%;--primary-foreground:60 10% 98%;
+--secondary:60 6% 94%;--secondary-foreground:240 10% 6%;
+--muted:60 6% 94%;--muted-foreground:240 5% 46%;
+--accent:164 60% 32%;--accent-foreground:0 0% 100%;
+--accent-light:160 99% 66%;
+--border:60 6% 90%;
+--section-dark:240 10% 6%;--section-dark-foreground:60 10% 96%;
+--radius:0.75rem;
+}
+html{scroll-behavior:smooth}
+body{background:hsl(var(--background));color:hsl(var(--foreground));font-family:'Gilroy',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5}
+h1,h2,h3,h4,h5,h6{font-family:'Gilroy',system-ui,-apple-system,sans-serif}
+img{max-width:100%;display:block}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+a{text-decoration:none;color:inherit}
+
+/* ===== Utility ===== */
+.text-foreground{color:hsl(var(--foreground))}
+.text-muted{color:hsl(var(--muted-foreground))}
+.text-muted-60{color:hsl(var(--muted-foreground)/0.6)}
+.text-accent{color:hsl(var(--accent))}
+.text-white{color:#fff}
+.bg-background{background:hsl(var(--background))}
+.bg-card{background:hsl(var(--card))}
+.bg-secondary{background:hsl(var(--secondary))}
+.bg-accent{background:hsl(var(--accent))}
+.bg-foreground{background:hsl(var(--foreground))}
+.border-border{border-color:hsl(var(--border))}
+
+.section-dark{background:hsl(var(--section-dark));color:hsl(var(--section-dark-foreground))}
+
+.gradient-mesh{
+background:
+radial-gradient(ellipse 60% 50% at 20% 30%,hsla(164 60% 32%/0.08) 0%,transparent 70%),
+radial-gradient(ellipse 50% 60% at 80% 70%,hsla(210 60% 50%/0.06) 0%,transparent 70%),
+radial-gradient(ellipse 70% 40% at 50% 10%,hsla(45 60% 60%/0.05) 0%,transparent 70%);
+}
+
+.gradient-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.4;pointer-events:none}
+
+.hero-gradient-text{
+background:linear-gradient(90deg,#1C826E,#33B690);
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+.max-w-3xl{max-width:48rem}
+.max-w-6xl{max-width:72rem}
+.max-w-7xl{max-width:80rem}
+.mx-auto{margin-left:auto;margin-right:auto}
+.text-center{text-align:center}
+.relative{position:relative}
+.overflow-hidden{overflow:hidden}
+.z-10{z-index:10}
+
+/* ===== Scroll-reveal animation ===== */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.1s}
+.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}
+.reveal-delay-4{transition-delay:0.4s}
+
+/* ===== Hero ===== */
+.hero{position:relative;padding:10rem 1.5rem;overflow:hidden}
+.hero h1{font-size:clamp(2.8rem,6vw,4.5rem);font-weight:700;letter-spacing:-0.02em;line-height:1.05;margin-bottom:2rem}
+.hero p.sub{font-size:1.25rem;color:hsl(var(--muted-foreground));max-width:32rem;margin:0 auto 3.5rem;line-height:1.6}
+.hero-buttons{display:flex;align-items:center;justify-content:center;gap:1rem}
+.btn-primary{display:inline-flex;align-items:center;justify-content:center;height:2.75rem;padding:0 2rem;border-radius:4px;font-weight:600;font-size:1rem;background:hsl(var(--foreground));color:hsl(var(--background));transition:background 0.3s;position:relative;overflow:hidden}
+.btn-primary:hover{background:hsl(var(--foreground)/0.9)}
+.btn-primary .slide{position:absolute;right:4px;top:4px;bottom:4px;width:25%;border-radius:2px;background:hsl(var(--primary-foreground)/0.15);display:grid;place-items:center;transition:width 0.5s}
+.btn-primary:hover .slide{width:calc(100% - 8px)}
+.btn-primary .label{margin-right:2rem;transition:opacity 0.5s}
+.btn-primary:hover .label{opacity:0}
+.btn-secondary{height:2.75rem;padding:0 2rem;border-radius:4px;font-weight:500;font-size:1rem;background:hsl(var(--secondary));color:hsl(var(--secondary-foreground));transition:background 0.3s}
+.btn-secondary:hover{background:hsl(var(--secondary)/0.7)}
+
+/* ===== Chevron SVG ===== */
+.chevron-icon{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ===== Department Cards ===== */
+.dept-section{padding:8rem 1.5rem 12rem}
+.dept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+@media(max-width:768px){.dept-grid{grid-template-columns:1fr}}
+.dept-card{border-radius:1rem;border:1px solid hsl(var(--border)/0.6);background:hsl(var(--card));display:flex;flex-direction:column;box-shadow:0 4px 24px -8px rgba(0,0,0,0.06);transition:box-shadow 0.5s;overflow:hidden}
+.dept-card:hover{box-shadow:0 8px 40px -8px rgba(0,0,0,0.1)}
+.dept-card .body{padding:2rem;flex:1;display:flex;flex-direction:column}
+.dept-card .tagline{font-size:0.75rem;font-weight:600;color:hsl(var(--accent));letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1.5rem}
+.dept-card h3{font-size:1.875rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:0.75rem}
+.dept-card .desc{font-size:1rem;color:hsl(var(--muted-foreground));line-height:1.6;margin-bottom:2rem}
+.worker-list{list-style:none;flex:1;display:flex;flex-direction:column;gap:0.25rem;margin-bottom:2.5rem}
+.worker-item{display:flex;align-items:flex-start;gap:0.625rem;padding:0.625rem 0.75rem;border-radius:0.5rem;margin-left:-0.75rem;transition:background 0.3s,transform 0.3s;transform-origin:left}
+.worker-item:hover{background:hsl(var(--foreground)/0.04);transform:scale(1.02)}
+.worker-dot{width:6px;height:6px;border-radius:50%;background:hsl(var(--accent));margin-top:8px;flex-shrink:0}
+.worker-name{font-size:1rem;font-weight:600}
+.worker-role{font-size:0.875rem;color:hsl(var(--muted-foreground));margin-top:2px}
+.dept-footer{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;font-size:1rem;font-weight:600;color:hsl(var(--accent));transition:background 0.5s,color 0.5s}
+.dept-footer:hover{background:#1D826F;color:#48FFBD}
+.arrow-icon{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ===== Onboarding statement ===== */
+.onboarding{margin-top:10rem;margin-bottom:0}
+.onboarding-flex{display:flex;align-items:center;justify-content:space-between;gap:3rem}
+.onboarding h3{font-size:clamp(1.5rem,3vw,2rem);font-weight:700;letter-spacing:-0.02em;line-height:1.3;max-width:26rem;flex-shrink:0}
+.onboard-items{display:flex;flex-wrap:wrap;align-items:center;gap:2.5rem}
+.onboard-item{display:flex;align-items:center;gap:0.625rem;white-space:nowrap}
+.check-icon{width:20px;height:20px;stroke:hsl(var(--accent));fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.onboard-item span{font-size:0.875rem;color:hsl(var(--muted-foreground))}
+.divider{border:none;border-top:1px solid hsl(var(--foreground)/0.1);margin-top:2.5rem}
+@media(max-width:768px){.onboarding-flex{flex-direction:column;align-items:flex-start}}
+
+/* ===== Mission ===== */
+.mission{margin-top:10rem;margin-bottom:3rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+@media(max-width:768px){.mission{grid-template-columns:1fr}}
+.mission-headline{font-size:clamp(1.5rem,3vw,2.25rem);font-weight:700;line-height:1.3;letter-spacing:-0.02em}
+.mission-gradient{background:linear-gradient(to right,#1C826E,#259782);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.mission-item{padding:1.25rem 0;transition:transform 0.3s;transform-origin:left;cursor:default}
+.mission-item:hover{transform:scale(1.02)}
+.mission-item p.title{font-size:1.125rem;font-weight:600;letter-spacing:-0.01em}
+.mission-item p.sub{font-size:0.875rem;color:hsl(var(--muted-foreground));margin-top:0.25rem}
+.mission-divider{border:none;border-top:1px solid hsl(var(--foreground)/0.1)}
+
+/* ===== Chart ===== */
+.chart-wrap{margin-top:2.5rem;max-width:32rem}
+
+/* ===== Promise ===== */
+.promise{padding:8rem 1.5rem 10rem;position:relative;overflow:hidden}
+.promise-grid{display:flex;gap:0}
+.promise-card{flex:1;position:relative}
+.promise-bg{position:absolute;inset:-1rem;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);transform:skewX(-8deg);transition:background 0.5s}
+.promise-card:hover .promise-bg{background:rgba(255,255,255,0.06)}
+.promise-divider{position:absolute;left:0;top:8px;bottom:8px;width:1px;background:rgba(255,255,255,0.08);transform:skewX(-8deg)}
+.promise-content{position:relative;z-index:10;padding:2.5rem 2rem}
+.promise-num{font-size:0.75rem;font-family:monospace;color:hsl(var(--accent)/0.6);letter-spacing:0.1em}
+.promise-title{font-size:1.5rem;font-weight:700;color:#fff;letter-spacing:-0.02em;margin-top:1rem;margin-bottom:0.5rem}
+.promise-sub{font-size:0.875rem;font-weight:600;color:hsl(var(--accent));margin-bottom:0.75rem}
+.promise-desc{font-size:0.9375rem;color:rgba(255,255,255,0.4);line-height:1.6}
+@media(max-width:768px){.promise-grid{flex-direction:column;gap:1rem}.promise-bg{transform:none;inset:0;border-radius:0.5rem;border:1px solid rgba(255,255,255,0.08)}.promise-divider{display:none}}
+
+/* ===== Testimonials ===== */
+.testimonials{padding:10rem 1.5rem}
+.testimonial-card{border-radius:1.5rem;overflow:hidden;background:#fff;border:1px solid hsl(var(--border)/0.6);box-shadow:0 8px 50px -12px rgba(0,0,0,0.1),0 0 80px -20px hsla(152,56%,40%,0.08);transition:box-shadow 0.5s}
+.testimonial-inner{display:flex;align-items:stretch}
+@media(max-width:768px){.testimonial-inner{flex-direction:column}}
+.testimonial-img{width:24rem;flex-shrink:0;object-fit:cover}
+@media(max-width:768px){.testimonial-img{width:100%;height:18rem}}
+.testimonial-body{flex:1;padding:3.5rem 4rem;display:flex;flex-direction:column;justify-content:center}
+@media(max-width:768px){.testimonial-body{padding:2rem}}
+.testimonial-dept{font-size:0.875rem;font-weight:600;color:hsl(var(--accent));text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2rem}
+.testimonial-quote{font-size:clamp(1.5rem,3vw,2.25rem);font-weight:700;line-height:1.2;letter-spacing:-0.02em;margin-bottom:2.5rem}
+.testimonial-name{font-size:1.125rem;font-weight:700}
+.testimonial-role{font-size:1rem;color:hsl(var(--muted-foreground))}
+.testimonial-nav{display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:2rem}
+.nav-btn{width:2.5rem;height:2.5rem;border-radius:50%;border:1px solid hsl(var(--border));background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.06);display:grid;place-items:center;transition:background 0.2s}
+.nav-btn:hover{background:hsl(var(--muted))}
+.dots{display:flex;gap:0.5rem}
+.dot{width:8px;height:8px;border-radius:9999px;background:hsl(var(--border));transition:all 0.3s}
+.dot.active{width:24px;background:hsl(var(--accent))}
+
+/* ===== CTA ===== */
+.cta-section{padding:10rem 1.5rem}
+.cta-box{max-width:80rem;margin:0 auto;position:relative;overflow:hidden;border-radius:1.5rem;padding:6rem 4rem;text-align:center}
+.cta-box h2{font-size:clamp(2rem,4vw,3rem);font-weight:700;letter-spacing:-0.02em;color:#fff;margin-bottom:1.25rem}
+.cta-box p.sub{font-size:0.875rem;color:rgba(255,255,255,0.4);margin-bottom:1rem;letter-spacing:0.05em}
+.cta-box p.desc{font-size:1.125rem;color:rgba(255,255,255,0.4);margin-bottom:3rem;max-width:32rem;margin-left:auto;margin-right:auto}
+.cta-tabs{display:inline-flex;gap:0.25rem;border-radius:9999px;padding:0.25rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);margin-bottom:2.5rem}
+.cta-tab{padding:0.5rem 1.25rem;border-radius:9999px;font-size:0.875rem;font-weight:500;color:rgba(255,255,255,0.4);transition:all 0.3s;position:relative}
+.cta-tab.active{color:hsl(var(--foreground))}
+.cta-tab .pill{position:absolute;inset:0;background:#fff;border-radius:9999px;z-index:0}
+.cta-tab span{position:relative;z-index:1}
+.cta-tab:hover{color:rgba(255,255,255,0.7)}
+.cta-tab.active:hover{color:hsl(var(--foreground))}
+.btn-cta{display:inline-flex;align-items:center;gap:0.5rem;height:2.75rem;padding:0 2rem;border-radius:4px;font-weight:600;font-size:1rem;background:hsl(var(--accent));color:hsl(var(--accent-foreground));box-shadow:0 4px 20px hsl(var(--accent)/0.2);transition:background 0.3s}
+.btn-cta:hover{background:hsl(var(--accent)/0.9)}
+.btn-cta svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ===== Fade transition for testimonials ===== */
+.fade-enter{opacity:0;transform:translateX(40px)}
+.fade-active{opacity:1;transform:translateX(0);transition:opacity 0.4s ease,transform 0.4s ease}
+.fade-exit{opacity:0;transform:translateX(-40px);transition:opacity 0.3s ease,transform 0.3s ease}
+
+</style>
+</head>
+<body>
+
+
+<!-- ===== HERO ===== -->
+<section class="hero gradient-mesh text-center relative">
+<div class="gradient-orb" style="width:500px;height:500px;background:hsl(var(--accent)/0.2);top:5rem;left:-10rem"></div>
+<div class="gradient-orb" style="width:400px;height:400px;background:hsla(210,80%,60%,0.15);bottom:2.5rem;right:-10%"></div>
+<div class="max-w-3xl mx-auto relative z-10">
+<h1 class="reveal"><span class="hero-gradient-text">AI Workers</span><br><span class="text-foreground">that Drive Revenue</span></h1>
+<p class="sub reveal reveal-delay-1">Onboard high-performance AI workers that take over key marketing, sales and finance operations.</p>
+<div class="hero-buttons reveal reveal-delay-2">
+<button class="btn-primary" onclick="window.open('#','_blank')">
+<span class="label">Book a demo</span>
+<i class="slide"><svg class="chevron-icon" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></i>
+</button>
+<button class="btn-secondary" onclick="document.getElementById('workers').scrollIntoView({behavior:'smooth'})">Explore workers</button>
+</div>
+</div>
+</section>
+
+<!-- ===== DEPARTMENT CARDS ===== -->
+<section id="workers" class="dept-section">
+<div class="max-w-7xl mx-auto">
+<p class="text-muted-60 text-center reveal" style="font-size:0.875rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem">With EverWorker</p>
+<h2 class="text-foreground text-center reveal" style="font-size:clamp(1.875rem,4vw,3rem);font-weight:700;letter-spacing:-0.02em;margin-bottom:1.25rem">
+<span>You could be getting more</span><br><span>from your revenue operations</span>
+</h2>
+<p class="text-muted text-center reveal reveal-delay-1" style="font-size:1.125rem;max-width:28rem;margin:0 auto 5rem">No more bottlenecks, just output. Onboard the same AI workers used by AI-first brands.</p>
+
+<div class="dept-grid">
+
+<div class="dept-card reveal">
+<div class="body">
+<p class="tagline">Generate pipeline.</p>
+<h3>Marketing</h3>
+<p class="desc">AI workers that create demand, optimize channels and fill pipeline.</p>
+<ul class="worker-list">
+<li class="worker-item"><span class="worker-dot"></span><div><span class="worker-name">SEO Worker</span><p class="worker-role">Rankings &amp; organic growth</p></div></li>
+<li class="worker-item"><span class="worker-dot"></span><div><span class="worker-name">Advertising Worker</span><p class="worker-role">Paid media at scale</p></div></li>
+<li class="worker-item"><span class="worker-dot"></span><div><span class="worker-name">Content Marketing Worker</span><p class="worker-role">Editorial engine on autopilot</p></div></li>
+</ul>
+</div>
+<a href="/marketing" class="dept-footer"><span>Explore workers</span><svg class="arrow-icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+</div>
+
+<div class="dept-card reveal reveal-delay-1">
+<div class="body">
+<p class="tagline">Close revenue.</p>
+<h3>Sales</h3>
+<p class="desc">AI workers that fully qualify at any scale — your reps only talk to buyers.</p>
+<ul class="worker-list">
+<li class="worker-item"><span class="worker-dot"></span><div><span class="worker-name">Inbound SDR Worker</span><p class="worker-role">Instant lead qualification</p></div></li>
+<li class="worker-item"><span class="worker-dot"></span><div><span class="worker-name">Outbound SDR Worker</span><p class="worker-role">Personalized outreach at scale</p></div></li>
+<li class="worker-item"><span class="worker-dot"></span><div><span class="worker-name">Lead Enrichment Worker</span><p class="worker-role">Deep prospect intelligence</p></div></li>
+</ul>
+</div>
+<a href="/sales" class="dept-footer"><span>Explore workers</span><svg class="arrow-icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+</div>
+
+<div class="dept-card reveal reveal-delay-2">
+<div class="body">
+<p class="tagline">Protect cash.</p>
+<h3>Financial Ops</h3>
+<p class="desc">AI workers that process, reconcile and forecast. More accurate than humans.</p>
+<ul class="worker-list">
+<li class="worker-item"><span class="worker-dot"></span><div><span class="worker-name">Accounts Payable Worker</span><p class="worker-role">Zero-touch invoice processing</p></div></li>
+<li class="worker-item"><span class="worker-dot"></span><div><span class="worker-name">Accounts Receivable Worker</span><p class="worker-role">Automated collections</p></div></li>
+<li class="worker-item"><span class="worker-dot"></span><div><span class="worker-name">Cash Flow Worker</span><p class="worker-role">Real-time liquidity visibility</p></div></li>
+</ul>
+</div>
+<a href="/finance" class="dept-footer"><span>Explore workers</span><svg class="arrow-icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+</div>
+
+</div>
+
+<!-- Onboarding statement -->
+<div class="onboarding reveal">
+<div class="onboarding-flex">
+<h3>AI Workers are onboarded,<br>not logged into</h3>
+<div class="onboard-items">
+<div class="onboard-item"><svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span>Autonomous</span></div>
+<div class="onboard-item"><svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span>In your systems</span></div>
+<div class="onboard-item"><svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span>Report progress</span></div>
+<div class="onboard-item"><svg class="check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span>Chat with them, like people</span></div>
+</div>
+</div>
+<hr class="divider">
+</div>
+
+<!-- Mission -->
+<div class="mission reveal">
+<div>
+<p class="mission-headline">
+<span class="text-foreground">The rules of work have changed. </span>
+<span class="mission-gradient">Put AI Workers to work and do more.</span>
+</p>
+<div class="chart-wrap" id="chartWrap">
+<svg viewBox="0 0 560 240" style="width:100%;height:auto" preserveAspectRatio="xMidYMid meet">
+<defs>
+<linearGradient id="chartGrad" x1="0.15" y1="0" x2="0.7" y2="1">
+<stop offset="0%" stop-color="#52FEBF" stop-opacity="0.30"/>
+<stop offset="50%" stop-color="#52FEBF" stop-opacity="0.10"/>
+<stop offset="100%" stop-color="#52FEBF" stop-opacity="0.01"/>
+</linearGradient>
+<clipPath id="areaReveal"><rect id="chartClip" x="0" y="0" width="560" height="240" style="transform:scaleX(0);transform-origin:left;transition:transform 1.8s cubic-bezier(0.16,1,0.3,1)"/></clipPath>
+</defs>
+<path d="M 0 234 C 30 232 50 228 80 220 C 100 214 110 208 130 212 C 150 216 155 220 170 210 C 190 196 200 188 230 178 C 250 172 260 176 280 168 C 300 158 310 142 340 120 C 360 104 370 108 390 90 C 410 70 430 44 460 28 C 480 16 510 6 540 2 L 560 0 L 560 240 L 0 240 Z" fill="url(#chartGrad)" clip-path="url(#areaReveal)"/>
+<path id="chartLine" d="M 0 234 C 30 232 50 228 80 220 C 100 214 110 208 130 212 C 150 216 155 220 170 210 C 190 196 200 188 230 178 C 250 172 260 176 280 168 C 300 158 310 142 340 120 C 360 104 370 108 390 90 C 410 70 430 44 460 28 C 480 16 510 6 540 2 L 560 0" fill="none" stroke="#22826F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke-dasharray:1200;stroke-dashoffset:1200;transition:stroke-dashoffset 1.8s cubic-bezier(0.16,1,0.3,1)"/>
+</svg>
+</div>
+</div>
+<div style="padding-top:0.5rem">
+<hr class="mission-divider">
+<div class="mission-item"><p class="title">No more bottlenecks</p><p class="sub">Remove the friction that slows every team down.</p></div>
+<hr class="mission-divider">
+<div class="mission-item"><p class="title">Infinitely more output</p><p class="sub">Scale work without scaling headcount.</p></div>
+<hr class="mission-divider">
+<div class="mission-item"><p class="title">1/100th of the old cost</p><p class="sub">Enterprise-grade results at a fraction of the price.</p></div>
+<hr class="mission-divider">
+<div class="mission-item"><p class="title">Make work human again</p><p class="sub">Let people focus on judgment, not process.</p></div>
+<hr class="mission-divider">
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- ===== PROMISE ===== -->
+<section class="promise section-dark">
+<div class="max-w-7xl mx-auto relative z-10">
+<p class="reveal" style="font-size:0.875rem;color:rgba(255,255,255,0.3);text-align:center;margin-bottom:1rem;letter-spacing:0.1em;text-transform:uppercase">Why EverWorker</p>
+<h2 class="reveal" style="font-size:clamp(1.875rem,4vw,3rem);font-weight:700;letter-spacing:-0.02em;color:#fff;text-align:center;margin-bottom:1.5rem">Built different. Delivered fast.</h2>
+<p class="reveal reveal-delay-1" style="font-size:1.125rem;color:rgba(255,255,255,0.4);text-align:center;margin-bottom:5rem;max-width:28rem;margin-left:auto;margin-right:auto">Three promises we make to every customer.</p>
+
+<div class="promise-grid">
+<div class="promise-card reveal">
+<div class="promise-bg"></div>
+<div class="promise-content">
+<span class="promise-num">01</span>
+<h3 class="promise-title">Live in 45 days</h3>
+<p class="promise-sub">Six weeks, not six months.</p>
+<p class="promise-desc">From kickoff to production. We move fast because we've done this before.</p>
+</div>
+</div>
+<div class="promise-card reveal reveal-delay-1">
+<div class="promise-divider"></div>
+<div class="promise-bg"></div>
+<div class="promise-content">
+<span class="promise-num">02</span>
+<h3 class="promise-title">We do the work</h3>
+<p class="promise-sub">Configured for you, not left to you.</p>
+<p class="promise-desc">We configure every worker to your workflows and tune them to your business.</p>
+</div>
+</div>
+<div class="promise-card reveal reveal-delay-2">
+<div class="promise-divider"></div>
+<div class="promise-bg"></div>
+<div class="promise-content">
+<span class="promise-num">03</span>
+<h3 class="promise-title">Performance guaranteed</h3>
+<p class="promise-sub">Measurable outcomes or we make it right.</p>
+<p class="promise-desc">If your AI workers don't deliver, we keep working until they do — at no extra cost.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="testimonials">
+<div class="max-w-6xl mx-auto">
+<p class="text-muted-60 text-center reveal" style="font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem">What operators are saying</p>
+<h2 class="text-foreground text-center reveal" style="font-size:clamp(2rem,4vw,3rem);font-weight:700;letter-spacing:-0.02em;margin-bottom:5rem">Results that speak for themselves</h2>
+
+<div class="testimonial-card">
+<div class="testimonial-inner" id="testimonialInner">
+<img id="tImg" class="testimonial-img" src="{{ get_asset_url('../images/headshot-sarah.jpg') }}" alt="Sarah Chen, CMO">
+<div class="testimonial-body">
+<p class="testimonial-dept" id="tDept">Marketing</p>
+<blockquote class="testimonial-quote" id="tQuote">&ldquo;We replaced three full-time hires. Output tripled in month one.&rdquo;</blockquote>
+<div>
+<p class="testimonial-name" id="tName">Sarah Chen</p>
+<p class="testimonial-role" id="tRole">CMO, Vantage Health</p>
+</div>
+</div>
+</div>
+</div>
+
+<div class="testimonial-nav">
+<button class="nav-btn" onclick="prevTestimonial()"><svg class="chevron-icon" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+<div class="dots" id="dots">
+<button class="dot active" onclick="goTestimonial(0)"></button>
+<button class="dot" onclick="goTestimonial(1)"></button>
+<button class="dot" onclick="goTestimonial(2)"></button>
+</div>
+<button class="nav-btn" onclick="nextTestimonial()"><svg class="chevron-icon" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+</div>
+</div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta-section">
+<div class="cta-box section-dark reveal">
+<div class="gradient-orb" style="width:500px;height:500px;background:hsl(var(--accent)/0.15);top:-30%;left:-10%"></div>
+<div class="gradient-orb" style="width:400px;height:400px;background:hsla(210,80%,60%,0.1);bottom:-30%;right:-10%"></div>
+<div class="relative z-10">
+<p class="sub" style="color:rgba(255,255,255,0.4);margin-bottom:1rem;letter-spacing:0.05em">Free whitepaper</p>
+<h2>Rethink the operations that<br>drive your revenue</h2>
+<p class="desc">Revenue is the lifeblood of your business. This guide shows you how to rebuild the marketing, sales, and finance engine with AI-first operations — so every dollar works harder.</p>
+<div class="cta-tabs" id="ctaTabs">
+<button class="cta-tab active" onclick="setCtaTab(this)"><span class="pill" style="position:absolute;inset:0;background:#fff;border-radius:9999px"></span><span>All departments</span></button>
+<button class="cta-tab" onclick="setCtaTab(this)"><span>Marketing</span></button>
+<button class="cta-tab" onclick="setCtaTab(this)"><span>Sales</span></button>
+<button class="cta-tab" onclick="setCtaTab(this)"><span>Finance</span></button>
+</div>
+<div>
+<button class="btn-cta">
+<svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+Download the AI-first playbook
+<svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+</button>
+</div>
+</div>
+</div>
+</section>
+
+
+<script>
+
+/* ===== Scroll reveal ===== */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.15, rootMargin: '-40px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* ===== Chart animation ===== */
+const chartObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      setTimeout(() => {
+        document.getElementById('chartClip').style.transform = 'scaleX(1)';
+        document.getElementById('chartLine').style.strokeDashoffset = '0';
+      }, 200);
+      chartObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+chartObserver.observe(document.getElementById('chartWrap'));
+
+/* ===== Testimonials ===== */
+const testimonials = [
+  { quote: 'We replaced three full-time hires. Output tripled in month one.', name: 'Sarah Chen', role: 'CMO', company: 'Vantage Health', department: 'Marketing', image: '{{ get_asset_url("../images/headshot-sarah.jpg") }}' },
+  { quote: '200+ leads qualified daily at 94% accuracy. Paid for itself in week one.', name: 'Marcus Johnson', role: 'CRO', company: 'Relay Commerce', department: 'Sales', image: '{{ get_asset_url("../images/headshot-marcus.jpg") }}' },
+  { quote: 'Month-end close went from 5 days to 1.5. Our board noticed immediately.', name: 'Priya Patel', role: 'CFO', company: 'Nova Financial', department: 'Finance', image: '{{ get_asset_url("../images/headshot-priya.jpg") }}' },
+];
+let current = 0;
+let autoTimer = setInterval(nextTestimonial, 6000);
+
+function showTestimonial(i) {
+  const t = testimonials[i];
+  const inner = document.getElementById('testimonialInner');
+  inner.style.opacity = '0'; inner.style.transform = 'translateX(40px)';
+  setTimeout(() => {
+    document.getElementById('tImg').src = t.image;
+    document.getElementById('tImg').alt = t.name + ', ' + t.role;
+    document.getElementById('tDept').textContent = t.department;
+    document.getElementById('tQuote').innerHTML = '&ldquo;' + t.quote + '&rdquo;';
+    document.getElementById('tName').textContent = t.name;
+    document.getElementById('tRole').textContent = t.role + ', ' + t.company;
+    inner.style.opacity = '1'; inner.style.transform = 'translateX(0)';
+    document.querySelectorAll('.dot').forEach((d, idx) => { d.classList.toggle('active', idx === i); });
+  }, 300);
+}
+function nextTestimonial() { current = (current + 1) % testimonials.length; showTestimonial(current); clearInterval(autoTimer); autoTimer = setInterval(nextTestimonial, 6000); }
+function prevTestimonial() { current = (current - 1 + testimonials.length) % testimonials.length; showTestimonial(current); clearInterval(autoTimer); autoTimer = setInterval(nextTestimonial, 6000); }
+function goTestimonial(i) { current = i; showTestimonial(i); clearInterval(autoTimer); autoTimer = setInterval(nextTestimonial, 6000); }
+document.getElementById('testimonialInner').style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+
+/* ===== CTA tabs ===== */
+function setCtaTab(btn) {
+  document.querySelectorAll('.cta-tab').forEach(t => { t.classList.remove('active'); const pill = t.querySelector('.pill'); if (pill) pill.remove(); });
+  btn.classList.add('active');
+  const pill = document.createElement('span'); pill.className = 'pill'; pill.style.cssText = 'position:absolute;inset:0;background:#fff;border-radius:9999px';
+  btn.insertBefore(pill, btn.firstChild);
+}
+
+</script>
+{{ standard_footer_includes }}
+</body>
+</html>

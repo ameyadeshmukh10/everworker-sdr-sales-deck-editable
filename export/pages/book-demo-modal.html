@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Book a Demo Modal — EverWorker</title>
+<meta name="description" content="Standalone preview of the EverWorker Book a Demo modal: contact form, calendar/time picker, and confirmation screen.">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--background:60 10% 98%;--foreground:240 10% 6%;
+--card:0 0% 100%;
+--secondary:60 6% 94%;
+--muted:60 6% 94%;--muted-foreground:240 5% 46%;
+--accent:164 60% 32%;--accent-foreground:0 0% 100%;
+--destructive:351 100% 53%;--destructive-foreground:0 0% 100%;
+--border:60 6% 90%;
+}
+html{scroll-behavior:smooth}
+body{background:hsl(var(--background));color:hsl(var(--foreground));font-family:'Gilroy','Inter',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1rem;gap:1.5rem}
+h1,h2,h3{font-family:inherit;letter-spacing:-0.02em}
+button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
+input{font-family:inherit;font-size:inherit;color:inherit}
+
+/* Stage page */
+.stage{text-align:center;max-width:42rem}
+.stage .eyebrow{font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;color:hsl(var(--accent));margin-bottom:0.75rem}
+.stage h1{font-size:clamp(2rem,4vw,2.75rem);font-weight:700;margin-bottom:0.75rem}
+.stage p{color:hsl(var(--muted-foreground));margin-bottom:1.75rem}
+.cta-row{display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center}
+.btn-cta{display:inline-flex;align-items:center;gap:0.5rem;height:2.75rem;padding:0 1.5rem;border-radius:4px;font-weight:600;background:hsl(var(--destructive));color:#fff;box-shadow:0 1px 2px rgba(0,0,0,0.05);transition:background 0.2s,transform 0.2s}
+.btn-cta:hover{background:hsl(var(--destructive)/0.9);transform:translateY(-1px)}
+.btn-ghost{display:inline-flex;align-items:center;gap:0.5rem;height:2.75rem;padding:0 1.25rem;border-radius:4px;font-weight:500;background:hsl(var(--secondary));color:hsl(var(--foreground));font-size:0.9rem;transition:background 0.2s}
+.btn-ghost:hover{background:hsl(var(--muted))}
+
+.icon{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:inline-block;vertical-align:middle}
+
+/* ===== Modal ===== */
+.modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal.open{display:flex}
+.modal .scrim{position:absolute;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);animation:fadeIn 0.2s}
+.modal .dialog{position:relative;background:#fff;border-radius:1rem;max-width:48rem;width:100%;max-height:90vh;overflow:hidden;border:1px solid hsl(var(--border)/0.6);box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);display:flex;flex-direction:column;animation:zoomIn 0.2s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes zoomIn{from{opacity:0;transform:scale(0.96)}to{opacity:1;transform:scale(1)}}
+.modal .head{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;padding-right:3.5rem;border-bottom:1px solid hsl(var(--border)/0.6)}
+.modal .head .progress{display:flex;align-items:center;gap:0.75rem}
+.modal .pips{display:flex;gap:0.375rem}
+.pip{height:6px;width:1rem;border-radius:9999px;background:hsl(var(--muted));transition:all 0.3s}
+.pip.active{width:2rem;background:hsl(var(--foreground))}
+.modal .step-name{font-size:0.75rem;color:hsl(var(--muted-foreground));font-weight:500;letter-spacing:0.04em}
+.modal .meta{font-size:0.75rem;color:hsl(var(--muted-foreground))}
+.close{position:absolute;top:1rem;right:1rem;padding:0.5rem;border-radius:0.5rem;color:hsl(var(--muted-foreground));transition:background 0.2s;z-index:5}
+.close:hover{background:hsl(var(--secondary))}
+
+.modal .body{padding:2rem;overflow-y:auto}
+.modal h2{font-size:1.5rem;font-weight:700;margin-bottom:0.25rem}
+.modal .lede{font-size:0.875rem;color:hsl(var(--muted-foreground));margin-bottom:1.5rem}
+
+.field{display:flex;flex-direction:column;gap:0.375rem;margin-bottom:1rem}
+.field label{font-size:0.75rem;font-weight:500;color:hsl(var(--muted-foreground))}
+.field label .opt{color:hsl(var(--muted-foreground)/0.5)}
+.field input{height:2.5rem;padding:0 0.875rem;border:1px solid hsl(var(--border));border-radius:0.5rem;background:#fff;transition:border-color 0.15s,box-shadow 0.15s}
+.field input:focus{outline:none;border-color:hsl(var(--foreground)/0.5);box-shadow:0 0 0 2px hsl(var(--foreground)/0.05)}
+.grid-2{display:grid;grid-template-columns:1fr;gap:1rem}
+@media(min-width:640px){.grid-2{grid-template-columns:1fr 1fr}}
+.grid-2 .span2{grid-column:1/-1}
+
+.modal .actions{display:flex;justify-content:space-between;align-items:center;margin-top:2rem}
+.modal .actions .back{font-size:0.875rem;color:hsl(var(--muted-foreground));display:inline-flex;gap:0.375rem;align-items:center;transition:color 0.15s}
+.modal .actions .back:hover{color:hsl(var(--foreground))}
+.modal .actions .next{display:inline-flex;align-items:center;gap:0.5rem;height:2.75rem;padding:0 1.5rem;border-radius:4px;background:hsl(var(--foreground));color:#fff;font-weight:600;transition:background 0.2s,opacity 0.2s}
+.modal .actions .next:disabled{opacity:0.4;cursor:not-allowed}
+.modal .actions .next:hover:not(:disabled){background:hsl(var(--foreground)/0.9)}
+
+/* calendar */
+.cal-wrap{display:grid;grid-template-columns:1fr;gap:1.5rem}
+@media(min-width:768px){.cal-wrap{grid-template-columns:1fr 220px}}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem}
+.cal-head p{font-size:0.875rem;font-weight:600}
+.cal-nav{padding:0.375rem;border-radius:0.375rem;color:hsl(var(--muted-foreground));transition:background 0.15s}
+.cal-nav:hover{background:hsl(var(--secondary))}
+.cal-nav:disabled{opacity:0.3;cursor:not-allowed}
+.dow{display:grid;grid-template-columns:repeat(7,1fr);gap:0.25rem;margin-bottom:0.25rem}
+.dow div{font-size:11px;text-align:center;color:hsl(var(--muted-foreground));padding:0.25rem 0}
+.cells{display:grid;grid-template-columns:repeat(7,1fr);gap:0.25rem}
+.cell{aspect-ratio:1;font-size:0.875rem;border-radius:9999px;display:flex;align-items:center;justify-content:center;background:transparent;transition:background 0.15s}
+.cell.day{background:hsl(var(--accent)/0.1);color:hsl(var(--accent));font-weight:500}
+.cell.day:hover{background:hsl(var(--accent)/0.2)}
+.cell.disabled{color:hsl(var(--muted-foreground)/0.3);cursor:not-allowed}
+.cell.selected{background:hsl(var(--foreground));color:#fff;font-weight:600}
+.times{border-left:1px solid hsl(var(--border)/0.6);padding-left:1.5rem;display:flex;flex-direction:column;gap:0.5rem;max-height:280px;overflow-y:auto}
+@media(max-width:768px){.times{border-left:none;padding-left:0;border-top:1px solid hsl(var(--border)/0.6);padding-top:1rem}}
+.times .label{font-size:0.75rem;font-weight:600;margin-bottom:0.25rem}
+.time{padding:0.625rem;border-radius:9999px;border:1px solid hsl(var(--border));font-size:0.875rem;text-align:center;transition:all 0.15s;background:#fff}
+.time:hover{border-color:hsl(var(--foreground)/0.5)}
+.time.selected{background:hsl(var(--foreground));color:#fff;border-color:hsl(var(--foreground))}
+
+/* confirmation */
+.confirm{text-align:center;padding:2.5rem 2rem}
+.check-circle{margin:0 auto 1.25rem;width:3.5rem;height:3.5rem;border-radius:50%;background:hsl(var(--accent)/0.1);display:flex;align-items:center;justify-content:center;color:hsl(var(--accent));animation:pop 0.4s ease-out}
+@keyframes pop{from{transform:scale(0.4);opacity:0}to{transform:scale(1);opacity:1}}
+.check-circle svg{width:28px;height:28px;stroke-width:2.5}
+.confirm h2{margin-bottom:0.5rem}
+.confirm p{font-size:0.875rem;color:hsl(var(--muted-foreground));max-width:28rem;margin:0 auto 1.5rem}
+.confirm .summary{display:inline-flex;flex-direction:column;gap:0.5rem;padding:1rem 1.5rem;border-radius:0.75rem;background:hsl(var(--secondary)/0.5);border:1px solid hsl(var(--border)/0.6);text-align:left}
+.confirm .summary .row{display:flex;align-items:center;gap:0.625rem;font-size:0.875rem}
+.confirm .summary .row svg{width:16px;height:16px;color:hsl(var(--muted-foreground));stroke:currentColor;fill:none;stroke-width:2}
+
+/* preview-only step jumper */
+.jumper{display:flex;gap:0.5rem;background:#fff;border:1px solid hsl(var(--border));border-radius:9999px;padding:0.375rem;box-shadow:0 4px 24px -8px rgba(0,0,0,0.08)}
+.jumper button{padding:0.5rem 1rem;border-radius:9999px;font-size:0.8rem;font-weight:600;color:hsl(var(--muted-foreground));transition:all 0.2s}
+.jumper button.active{background:hsl(var(--foreground));color:#fff}
+.jumper button:hover:not(.active){background:hsl(var(--secondary))}
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <p class="eyebrow">Component Preview</p>
+  <h1>Book a Demo modal</h1>
+  <p>Three-step booking flow: contact details → date & time picker → confirmation. Click the button below to open it, or jump straight to a specific step.</p>
+  <div class="cta-row">
+    <button class="btn-cta" onclick="openBookDemo()">Book a demo
+      <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+    <button class="btn-ghost" onclick="openAt(2)">Open on Step 2</button>
+    <button class="btn-ghost" onclick="openAt(3)">Open on Step 3</button>
+  </div>
+</div>
+
+<!-- ============== BOOK DEMO MODAL ============== -->
+<div class="modal" id="bookDemo" role="dialog" aria-modal="true" aria-labelledby="modalHeading">
+  <div class="scrim" onclick="closeBookDemo()"></div>
+  <div class="dialog">
+    <button class="close" onclick="closeBookDemo()" aria-label="Close">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+
+    <div class="head">
+      <div class="progress">
+        <div class="pips"><div class="pip active" id="pip1"></div><div class="pip" id="pip2"></div><div class="pip" id="pip3"></div></div>
+        <span class="step-name" id="stepName">About you</span>
+      </div>
+      <span class="meta">Demo · 30 min</span>
+    </div>
+
+    <!-- Preview-only step jumper -->
+    <div style="display:flex;justify-content:center;padding:0.75rem 1.5rem 0">
+      <div class="jumper">
+        <button id="jump1" class="active" onclick="goStep(1)">1 · About you</button>
+        <button id="jump2" onclick="goStep(2)">2 · Pick a time</button>
+        <button id="jump3" onclick="goStep(3)">3 · Confirmed</button>
+      </div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="body" id="step1">
+      <h2 id="modalHeading">Tell us about yourself</h2>
+      <p class="lede">A few details so we can tailor the demo to your team.</p>
+      <div class="grid-2">
+        <div class="field span2"><label>Full name</label><input id="f-name" placeholder="Jane Doe" maxlength="100"></div>
+        <div class="field"><label>Work email</label><input id="f-email" type="email" placeholder="jane@company.com" maxlength="255"></div>
+        <div class="field"><label>Phone <span class="opt">(optional)</span></label><input id="f-phone" type="tel" placeholder="+1 (555) 000-0000" maxlength="30"></div>
+        <div class="field"><label>Company</label><input id="f-company" placeholder="Acme Inc." maxlength="100"></div>
+        <div class="field"><label>Job title</label><input id="f-title" placeholder="VP Operations" maxlength="100"></div>
+        <div class="field span2"><label>What are you interested in? <span class="opt">(optional)</span></label><input id="f-interest" placeholder="e.g. SDR AI Worker, Cash Flow forecasting, custom workers" maxlength="200"></div>
+      </div>
+      <div class="actions" style="justify-content:flex-end">
+        <button class="next" id="toStep2" onclick="goStep(2)" disabled>Continue
+          <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="body" id="step2" style="display:none">
+      <h2>Select a date and time</h2>
+      <p class="lede">30-minute demo · America / New York</p>
+      <div class="cal-wrap">
+        <div>
+          <div class="cal-head">
+            <button class="cal-nav" id="prevMonth" onclick="changeMonth(-1)"><svg class="icon" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <p id="calLabel"></p>
+            <button class="cal-nav" onclick="changeMonth(1)"><svg class="icon" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+          </div>
+          <div class="dow"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+          <div class="cells" id="calCells"></div>
+        </div>
+        <div class="times">
+          <p class="label" id="timeLabel">Select a date</p>
+          <div id="timeList"></div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="back" onclick="goStep(1)"><svg class="icon" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> Back</button>
+        <button class="next" id="toStep3" onclick="goStep(3)" disabled>Confirm booking
+          <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="confirm" id="step3" style="display:none">
+      <div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <h2 id="confirmTitle">You're booked, there.</h2>
+      <p>We've sent a calendar invite to <strong id="confirmEmail">you</strong>. An EverWorker operator will join you to walk through your AI workforce.</p>
+      <div class="summary">
+        <div class="row"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span id="confirmDate">—</span></div>
+        <div class="row"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span id="confirmTime">—</span></div>
+      </div>
+      <div style="margin-top:2rem"><button class="next" onclick="closeBookDemo()" style="display:inline-flex">Done</button></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const TIMES=["9:00 am","9:30 am","10:00 am","10:30 am","11:00 am","1:00 pm","1:30 pm","2:00 pm","2:30 pm","3:00 pm","3:30 pm","4:00 pm"];
+let currentStep=1, monthOffset=0, selectedDate=null, selectedTime=null;
+
+function openBookDemo(){ goStep(1); document.getElementById('bookDemo').classList.add('open'); document.body.style.overflow='hidden'; }
+function openAt(n){ openBookDemo(); if(n===3 && !selectedDate){ selectedDate=nextWeekday(); selectedTime="10:30 am"; } goStep(n); }
+function closeBookDemo(){
+  document.getElementById('bookDemo').classList.remove('open');
+  document.body.style.overflow='';
+  setTimeout(()=>{
+    ['f-name','f-email','f-phone','f-company','f-title','f-interest'].forEach(id=>document.getElementById(id).value='');
+    selectedDate=null; selectedTime=null; monthOffset=0;
+    validateStep1(); goStep(1);
+  },200);
+}
+function goStep(n){
+  currentStep=n;
+  document.getElementById('step1').style.display = n===1?'block':'none';
+  document.getElementById('step2').style.display = n===2?'block':'none';
+  document.getElementById('step3').style.display = n===3?'block':'none';
+  for(let i=1;i<=3;i++){
+    document.getElementById('pip'+i).classList.toggle('active', n>=i);
+    document.getElementById('jump'+i).classList.toggle('active', n===i);
+  }
+  document.getElementById('stepName').textContent = n===1?'About you': n===2?'Pick a time':'Confirmed';
+  if(n===2) renderCalendar();
+  if(n===3){
+    if(!selectedDate){ selectedDate=nextWeekday(); selectedTime=selectedTime||"10:30 am"; }
+    const name=(document.getElementById('f-name').value||'there').split(' ')[0];
+    document.getElementById('confirmTitle').textContent = "You're booked, "+name+".";
+    document.getElementById('confirmEmail').textContent = document.getElementById('f-email').value || 'you';
+    document.getElementById('confirmDate').textContent = selectedDate.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+    document.getElementById('confirmTime').textContent = selectedTime+' · 30 min';
+  }
+}
+function nextWeekday(){
+  const d=new Date(); d.setDate(d.getDate()+1);
+  while(d.getDay()===0||d.getDay()===6) d.setDate(d.getDate()+1);
+  d.setHours(0,0,0,0); return d;
+}
+
+/* Step 1 validation */
+function validateStep1(){
+  const ok = ['f-name','f-email','f-company','f-title'].every(id=>document.getElementById(id).value.trim());
+  document.getElementById('toStep2').disabled = !ok;
+}
+['f-name','f-email','f-company','f-title'].forEach(id=>document.getElementById(id).addEventListener('input',validateStep1));
+
+/* Calendar */
+function renderCalendar(){
+  const base=new Date(); base.setMonth(base.getMonth()+monthOffset);
+  const year=base.getFullYear(), month=base.getMonth();
+  document.getElementById('calLabel').textContent = base.toLocaleString('en-US',{month:'long',year:'numeric'});
+  document.getElementById('prevMonth').disabled = monthOffset===0;
+  const first=new Date(year,month,1).getDay();
+  const days=new Date(year,month+1,0).getDate();
+  const today=new Date(); today.setHours(0,0,0,0);
+  const cells=document.getElementById('calCells'); cells.innerHTML='';
+  for(let i=0;i<first;i++) cells.appendChild(document.createElement('div'));
+  for(let d=1;d<=days;d++){
+    const date=new Date(year,month,d);
+    const isPast=date<today, isWk=date.getDay()===0||date.getDay()===6;
+    const disabled=isPast||isWk;
+    const sel=selectedDate&&selectedDate.toDateString()===date.toDateString();
+    const btn=document.createElement('button');
+    btn.className='cell '+(disabled?'disabled':'day')+(sel?' selected':'');
+    btn.textContent=d; btn.disabled=disabled;
+    btn.onclick=()=>{ selectedDate=date; selectedTime=null; renderCalendar(); renderTimes(); };
+    cells.appendChild(btn);
+  }
+  renderTimes();
+}
+function renderTimes(){
+  const list=document.getElementById('timeList'); list.innerHTML='';
+  document.getElementById('timeLabel').textContent = selectedDate ? selectedDate.toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'}) : 'Select a date';
+  if(!selectedDate){ document.getElementById('toStep3').disabled=true; return; }
+  TIMES.forEach(t=>{
+    const b=document.createElement('button');
+    b.className='time'+(selectedTime===t?' selected':'');
+    b.textContent=t;
+    b.onclick=()=>{ selectedTime=t; renderTimes(); };
+    list.appendChild(b);
+  });
+  document.getElementById('toStep3').disabled = !(selectedDate && selectedTime);
+}
+function changeMonth(delta){ monthOffset=Math.max(0,Math.min(3,monthOffset+delta)); renderCalendar(); }
+
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeBookDemo(); });
+</script>
+</body>
+</html>

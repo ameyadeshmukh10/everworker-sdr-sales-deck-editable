@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Site Navigation — EverWorker</title>
+<meta name="description" content="Standalone preview of the EverWorker desktop and mobile site navigation, including dropdowns, hover states, scroll shadow, and active-page styling.">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--background:60 10% 98%;--foreground:240 10% 6%;
+--card:0 0% 100%;
+--secondary:60 6% 94%;
+--muted:60 6% 94%;--muted-foreground:240 5% 46%;
+--accent:164 60% 32%;--accent-foreground:0 0% 100%;
+--destructive:351 100% 53%;--destructive-foreground:0 0% 100%;
+--border:60 6% 90%;
+--radius:0.75rem;
+}
+html{scroll-behavior:smooth}
+body{background:hsl(var(--background));color:hsl(var(--foreground));font-family:'Gilroy','Inter',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5;min-height:100vh}
+h1,h2,h3{font-family:inherit;letter-spacing:-0.02em}
+button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
+a{text-decoration:none;color:inherit}
+
+.icon{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:inline-block;vertical-align:middle}
+
+/* ===== Buttons ===== */
+.btn{display:inline-flex;align-items:center;justify-content:center;height:2.75rem;padding:0 1.5rem;border-radius:4px;font-weight:600;font-size:0.95rem;transition:background 0.25s,transform 0.2s}
+.btn-destructive{background:hsl(var(--destructive));color:#fff;box-shadow:0 1px 2px rgba(0,0,0,0.05)}
+.btn-destructive:hover{background:hsl(var(--destructive)/0.9)}
+
+/* ===== NAVBAR ===== */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;background:hsla(60,10%,98%,0.7);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);transition:box-shadow 0.3s}
+.nav.scrolled{box-shadow:0 4px 20px -4px hsl(240 10% 6% / 0.08)}
+.nav-inner{max-width:72rem;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:4rem}
+.logo{font-weight:800;font-style:italic;font-size:1.25rem;letter-spacing:-0.02em}
+
+.nav-links{display:none;align-items:center;gap:0.25rem}
+@media(min-width:768px){.nav-links{display:flex}}
+.nav-item{position:relative}
+.nav-btn{display:flex;align-items:center;gap:0.25rem;padding:0.5rem 1rem;font-size:15px;font-weight:500;color:hsl(var(--muted-foreground));border-radius:0.5rem;transition:color 0.2s,background 0.2s}
+.nav-btn:hover{color:hsl(var(--foreground))}
+.nav-btn .chev{transition:transform 0.2s}
+.nav-item.open .nav-btn{color:hsl(var(--foreground))}
+.nav-item.open .nav-btn .chev{transform:rotate(180deg)}
+
+/* Active page styling — applied to the trigger of the section the page belongs to,
+   or to the flat link itself. */
+.nav-btn.active,.nav-flat.active{color:hsl(var(--foreground));font-weight:600;position:relative}
+.nav-btn.active::after,.nav-flat.active::after{content:"";position:absolute;left:1rem;right:1rem;bottom:0.15rem;height:2px;border-radius:2px;background:hsl(var(--accent))}
+
+.nav-cta{display:none}
+@media(min-width:768px){.nav-cta{display:inline-flex;height:2.25rem;padding:0 1.25rem;font-size:0.875rem}}
+
+/* dropdowns */
+.dropdown{position:absolute;top:100%;left:50%;transform:translateX(-50%);padding-top:0.5rem;width:280px;display:none}
+.nav-item.open .dropdown{display:block;animation:ddIn 0.15s ease-out}
+@keyframes ddIn{from{opacity:0;transform:translate(-50%,4px)}to{opacity:1;transform:translate(-50%,0)}}
+.dropdown-inner{border-radius:1rem;padding:1.25rem;background:hsla(0,0%,100%,0.95);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid hsla(0,0%,100%,0.6);box-shadow:0 20px 40px -12px rgba(0,0,0,0.12)}
+.dropdown-cta{display:block;text-align:center;padding:0.5rem 1rem;border-radius:4px;background:hsl(var(--accent));color:#fff;font-size:0.875rem;font-weight:600;margin-bottom:1rem;transition:background 0.15s}
+.dropdown-cta:hover{background:hsl(var(--accent)/0.9)}
+.dropdown-label{font-size:10px;font-weight:600;color:hsl(var(--muted-foreground));text-transform:uppercase;letter-spacing:0.15em;margin-bottom:0.75rem}
+.dropdown-link{display:block;padding:0.625rem 0.75rem;border-radius:0.75rem;transition:background 0.15s}
+.dropdown-link:hover{background:hsl(var(--secondary))}
+.dropdown-link.active{background:hsl(var(--accent)/0.08)}
+.dropdown-link.active .name{color:hsl(var(--accent))}
+.dropdown-link .name{font-size:15px;font-weight:600;color:hsl(var(--foreground));transition:color 0.15s}
+.dropdown-link .role{font-size:13px;color:hsl(var(--muted-foreground));margin-top:2px}
+
+.nav-flat{padding:0.5rem 1rem;font-size:15px;font-weight:500;color:hsl(var(--muted-foreground));border-radius:0.5rem;transition:color 0.2s;position:relative}
+.nav-flat:hover{color:hsl(var(--foreground))}
+
+/* mobile menu */
+.menu-toggle{display:inline-flex;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;border-radius:0.5rem;color:hsl(var(--foreground));transition:background 0.2s}
+.menu-toggle:hover{background:hsl(var(--secondary))}
+@media(min-width:768px){.menu-toggle{display:none}}
+
+.mobile-sheet{position:fixed;inset:0;z-index:60;display:none}
+.mobile-sheet.open{display:block}
+.mobile-sheet .scrim{position:absolute;inset:0;background:rgba(0,0,0,0.4);animation:fadeIn 0.2s}
+.mobile-sheet .panel{position:absolute;top:0;right:0;bottom:0;width:300px;max-width:90vw;background:#fff;padding:2rem 1.5rem;overflow-y:auto;display:flex;flex-direction:column;gap:1.5rem;animation:slideIn 0.25s ease-out;box-shadow:-10px 0 30px rgba(0,0,0,0.08)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
+.mobile-sheet .sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem}
+.mobile-sheet .sheet-head .logo{font-size:1.125rem}
+.mobile-sheet .close-x{padding:0.5rem;border-radius:0.5rem;color:hsl(var(--muted-foreground))}
+.mobile-sheet .close-x:hover{background:hsl(var(--secondary))}
+.mobile-sheet .group p{font-weight:600;font-size:1rem;margin-bottom:0.5rem;color:hsl(var(--foreground))}
+.mobile-sheet .group a{display:block;padding:0.4rem 0;color:hsl(var(--muted-foreground));font-size:0.9rem;padding-left:1rem;border-left:2px solid transparent;transition:color 0.15s,border-color 0.15s}
+.mobile-sheet .group a:hover{color:hsl(var(--foreground))}
+.mobile-sheet .group a.active{color:hsl(var(--accent));border-color:hsl(var(--accent));font-weight:600}
+.mobile-sheet .flat-link{font-size:1rem;font-weight:600;padding:0.25rem 0;color:hsl(var(--foreground))}
+.mobile-sheet .flat-link.active{color:hsl(var(--accent))}
+
+/* ===== Stage / preview ===== */
+main{padding-top:6rem}
+.stage{max-width:48rem;margin:0 auto;padding:1rem 1.5rem 2rem;text-align:center}
+.stage .eyebrow{font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;color:hsl(var(--accent));margin-bottom:0.75rem}
+.stage h1{font-size:clamp(2rem,4vw,2.75rem);font-weight:700;margin-bottom:0.75rem}
+.stage p{color:hsl(var(--muted-foreground));margin-bottom:1.5rem}
+
+.controls{max-width:60rem;margin:0 auto;padding:0 1.5rem 4rem}
+.controls h3{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:hsl(var(--muted-foreground));font-weight:700;margin-bottom:0.75rem;text-align:center}
+.chips{display:flex;gap:0.4rem;flex-wrap:wrap;justify-content:center;margin-bottom:1.5rem}
+.chip{padding:0.5rem 1rem;border-radius:9999px;font-size:0.8rem;font-weight:600;border:1px solid hsl(var(--border));background:#fff;color:hsl(var(--muted-foreground));transition:all 0.2s}
+.chip:hover{border-color:hsl(var(--foreground)/0.3);color:hsl(var(--foreground))}
+.chip.active{background:hsl(var(--foreground));color:#fff;border-color:hsl(var(--foreground))}
+
+.scroll-area{height:140vh;background:linear-gradient(180deg,hsl(var(--secondary)/0) 0%,hsl(var(--secondary)/0.5) 100%);display:flex;align-items:center;justify-content:center;color:hsl(var(--muted-foreground));font-size:0.875rem;border-top:1px dashed hsl(var(--border))}
+
+.note{max-width:42rem;margin:0 auto;padding:1.25rem 1.5rem;border-radius:1rem;border:1px solid hsl(var(--border));background:#fff;font-size:0.875rem;color:hsl(var(--muted-foreground));line-height:1.65}
+.note strong{color:hsl(var(--foreground))}
+.note ul{margin:0.5rem 0 0;padding-left:1.25rem}
+.note li{margin:0.25rem 0}
+</style>
+</head>
+<body>
+
+<!-- ============== NAVBAR ============== -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="logo">EverWorker</a>
+
+    <div class="nav-links">
+      <div class="nav-item" data-section="marketing">
+        <button class="nav-btn">Marketing
+          <svg class="icon chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="dropdown">
+          <div class="dropdown-inner">
+            <a class="dropdown-cta" href="#" data-page="marketing">Marketing Solutions</a>
+            <p class="dropdown-label">Core workers</p>
+            <a class="dropdown-link" href="#" data-page="marketing-seo"><div class="name">SEO/AEO/GEO AI Worker</div><div class="role">Rankings &amp; organic growth</div></a>
+            <a class="dropdown-link" href="#" data-page="marketing-advertising"><div class="name">Advertising AI Worker</div><div class="role">Paid media at scale</div></a>
+            <a class="dropdown-link" href="#" data-page="marketing-content"><div class="name">Content Marketing AI Worker</div><div class="role">Long-form assets that scale your narrative</div></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-item" data-section="sales">
+        <button class="nav-btn">Sales
+          <svg class="icon chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="dropdown">
+          <div class="dropdown-inner">
+            <a class="dropdown-cta" href="#" data-page="sales">Sales Solutions</a>
+            <p class="dropdown-label">Core workers</p>
+            <a class="dropdown-link" href="#" data-page="sales-sdr"><div class="name">SDR AI Worker</div><div class="role">Instant lead qualification</div></a>
+            <a class="dropdown-link" href="#" data-page="sales-playbook"><div class="name">Sales Playbook AI Worker</div><div class="role">Context-driven talk tracks</div></a>
+            <a class="dropdown-link" href="#" data-page="sales-pipeline"><div class="name">Pipeline Reporting AI Worker</div><div class="role">Real-time deal intelligence</div></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-item" data-section="finance">
+        <button class="nav-btn">Finance
+          <svg class="icon chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="dropdown">
+          <div class="dropdown-inner">
+            <a class="dropdown-cta" href="#" data-page="finance">Finance Solutions</a>
+            <p class="dropdown-label">Core workers</p>
+            <a class="dropdown-link" href="#" data-page="finance-ap"><div class="name">Accts. Payable AI Worker</div><div class="role">Zero-touch invoice processing</div></a>
+            <a class="dropdown-link" href="#" data-page="finance-ar"><div class="name">Accts. Receivable AI Worker</div><div class="role">Automated collections</div></a>
+            <a class="dropdown-link" href="#" data-page="finance-cf"><div class="name">Cash Flow AI Worker</div><div class="role">Forecasts, optimizes and protects liquidity</div></a>
+          </div>
+        </div>
+      </div>
+
+      <a href="#" class="nav-flat" data-page="other">Other depts.</a>
+
+      <div class="nav-item" data-section="how">
+        <button class="nav-btn">How it works
+          <svg class="icon chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="dropdown" style="width:300px">
+          <div class="dropdown-inner">
+            <a class="dropdown-link" href="#" data-page="how"><div class="name">How it works</div><div class="role">Our four-step partnership</div></a>
+            <a class="dropdown-link" href="#" data-page="services"><div class="name">Services</div><div class="role">Discovery, shaping, enablement</div></a>
+            <a class="dropdown-link" href="#" data-page="team"><div class="name">Our story &amp; team</div><div class="role">The story and people behind EverWorker</div></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-destructive nav-cta" onclick="alert('Book a demo!')">Book a demo</button>
+
+    <button class="menu-toggle" onclick="toggleMobile()" aria-label="Open menu">
+      <svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- mobile sheet -->
+<div class="mobile-sheet" id="mobileSheet">
+  <div class="scrim" onclick="toggleMobile()"></div>
+  <div class="panel">
+    <div class="sheet-head">
+      <span class="logo">EverWorker</span>
+      <button class="close-x" onclick="toggleMobile()" aria-label="Close menu">
+        <svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="group" data-section="marketing"><p>Marketing</p>
+      <a href="#" data-page="marketing-seo">SEO/AEO/GEO AI Worker</a>
+      <a href="#" data-page="marketing-advertising">Advertising AI Worker</a>
+      <a href="#" data-page="marketing-content">Content Marketing AI Worker</a>
+    </div>
+    <div class="group" data-section="sales"><p>Sales</p>
+      <a href="#" data-page="sales-sdr">SDR AI Worker</a>
+      <a href="#" data-page="sales-playbook">Sales Playbook AI Worker</a>
+      <a href="#" data-page="sales-pipeline">Pipeline Reporting AI Worker</a>
+    </div>
+    <div class="group" data-section="finance"><p>Finance</p>
+      <a href="#" data-page="finance-ap">Accts. Payable AI Worker</a>
+      <a href="#" data-page="finance-ar">Accts. Receivable AI Worker</a>
+      <a href="#" data-page="finance-cf">Cash Flow AI Worker</a>
+    </div>
+    <div class="group" data-section="how"><p>How it works</p>
+      <a href="#" data-page="how">Our approach</a>
+      <a href="#" data-page="services">Services</a>
+      <a href="#" data-page="team">Our story &amp; team</a>
+    </div>
+    <a href="#" class="flat-link" data-page="other">Other depts.</a>
+    <button class="btn btn-destructive" onclick="toggleMobile();alert('Book a demo!')" style="width:100%">Book a demo</button>
+  </div>
+</div>
+
+<main>
+  <div class="stage">
+    <p class="eyebrow">Component Preview</p>
+    <h1>Site navigation</h1>
+    <p>Desktop nav with hover dropdowns, scroll-shadow, and active-page styling. Mobile nav opens a slide-in sheet. Pick a page below to see how the active state shifts across desktop and mobile.</p>
+  </div>
+
+  <div class="controls">
+    <h3>Simulate active page</h3>
+    <div class="chips" id="pageChips">
+      <button class="chip active" data-page="home">Home</button>
+      <button class="chip" data-page="marketing">Marketing (overview)</button>
+      <button class="chip" data-page="marketing-seo">SEO Worker</button>
+      <button class="chip" data-page="marketing-advertising">Advertising Worker</button>
+      <button class="chip" data-page="marketing-content">Content Worker</button>
+      <button class="chip" data-page="sales">Sales (overview)</button>
+      <button class="chip" data-page="sales-sdr">SDR Worker</button>
+      <button class="chip" data-page="sales-playbook">Sales Playbook</button>
+      <button class="chip" data-page="sales-pipeline">Pipeline Reporting</button>
+      <button class="chip" data-page="finance">Finance (overview)</button>
+      <button class="chip" data-page="finance-ap">Accts. Payable</button>
+      <button class="chip" data-page="finance-ar">Accts. Receivable</button>
+      <button class="chip" data-page="finance-cf">Cash Flow</button>
+      <button class="chip" data-page="other">Other depts.</button>
+      <button class="chip" data-page="how">How it works</button>
+      <button class="chip" data-page="services">Services</button>
+      <button class="chip" data-page="team">Our team</button>
+    </div>
+
+    <div class="note">
+      <strong>What's included:</strong>
+      <ul>
+        <li>Hover-to-open desktop dropdowns (click on touch); chevron rotates when open.</li>
+        <li>Active section trigger gets a subtle accent underline; nested page gets a tinted dropdown row.</li>
+        <li>Nav gains a soft shadow once you scroll past 8px (try scrolling).</li>
+        <li>Mobile slide-in sheet with grouped sections, active state on current page, and full-width Book a demo CTA.</li>
+        <li>Press <kbd>Esc</kbd> to close the mobile sheet or any open dropdown.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="scroll-area">Scroll up to see the nav's shadow appear / disappear.</div>
+</main>
+
+<script>
+/* ===== Navbar shadow on scroll ===== */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll',()=>{ nav.classList.toggle('scrolled', window.scrollY > 8); },{passive:true});
+
+/* ===== Dropdowns (hover on desktop, click on touch) ===== */
+document.querySelectorAll('.nav-item').forEach(item=>{
+  item.addEventListener('mouseenter',()=>item.classList.add('open'));
+  item.addEventListener('mouseleave',()=>item.classList.remove('open'));
+  item.querySelector('.nav-btn').addEventListener('click',(e)=>{
+    e.preventDefault();
+    document.querySelectorAll('.nav-item').forEach(i=>{ if(i!==item) i.classList.remove('open'); });
+    item.classList.toggle('open');
+  });
+});
+document.addEventListener('click',(e)=>{
+  if(!e.target.closest('.nav-item')) document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('open'));
+});
+
+/* ===== Mobile menu ===== */
+function toggleMobile(){ document.getElementById('mobileSheet').classList.toggle('open'); }
+
+/* ===== Active page simulation ===== */
+const PAGE_TO_SECTION = {
+  marketing:'marketing','marketing-seo':'marketing','marketing-advertising':'marketing','marketing-content':'marketing',
+  sales:'sales','sales-sdr':'sales','sales-playbook':'sales','sales-pipeline':'sales',
+  finance:'finance','finance-ap':'finance','finance-ar':'finance','finance-cf':'finance',
+  other:'other', how:'how', services:'how', team:'how',
+};
+
+function setActivePage(page){
+  // Desktop trigger underline
+  document.querySelectorAll('.nav-item').forEach(item=>{
+    const sec = item.dataset.section;
+    item.querySelector('.nav-btn').classList.toggle('active', PAGE_TO_SECTION[page]===sec);
+  });
+  // Other depts. flat link
+  document.querySelectorAll('.nav-flat').forEach(a=>{
+    a.classList.toggle('active', a.dataset.page === page);
+  });
+  // Dropdown row tint
+  document.querySelectorAll('.dropdown-link, .dropdown-cta').forEach(a=>{
+    a.classList.toggle('active', a.dataset.page === page);
+  });
+  // Mobile sheet active links
+  document.querySelectorAll('.mobile-sheet a').forEach(a=>{
+    a.classList.toggle('active', a.dataset.page === page);
+  });
+  // Chip state
+  document.querySelectorAll('#pageChips .chip').forEach(c=>{
+    c.classList.toggle('active', c.dataset.page === page);
+  });
+}
+document.querySelectorAll('#pageChips .chip').forEach(c=>{
+  c.addEventListener('click',()=>setActivePage(c.dataset.page));
+});
+
+/* Esc closes everything */
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    document.getElementById('mobileSheet').classList.remove('open');
+    document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('open'));
+  }
+});
+</script>
+</body>
+</html>

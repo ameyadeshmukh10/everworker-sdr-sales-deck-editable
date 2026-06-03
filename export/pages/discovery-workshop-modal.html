@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Discovery Workshop Modal — EverWorker</title>
+<meta name="description" content="Standalone preview of the EverWorker Discovery & Shaping Workshop request modal: lead form and confirmation view.">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--background:60 10% 98%;--foreground:240 10% 6%;
+--card:0 0% 100%;
+--secondary:60 6% 94%;
+--muted:60 6% 94%;--muted-foreground:240 5% 46%;
+--accent:164 60% 32%;--accent-foreground:0 0% 100%;
+--destructive:351 100% 53%;--destructive-foreground:0 0% 100%;
+--border:60 6% 90%;
+}
+body{background:hsl(var(--background));color:hsl(var(--foreground));font-family:'Gilroy','Inter',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1rem;gap:1.5rem}
+h1,h2,h3{font-family:inherit;letter-spacing:-0.02em}
+button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
+input,textarea{font-family:inherit;font-size:inherit;color:inherit}
+
+.stage{text-align:center;max-width:42rem}
+.stage .eyebrow{font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;color:hsl(var(--accent));margin-bottom:0.75rem}
+.stage h1{font-size:clamp(2rem,4vw,2.75rem);font-weight:700;margin-bottom:0.75rem}
+.stage p{color:hsl(var(--muted-foreground));margin-bottom:1.75rem}
+.cta-row{display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center}
+.btn-cta{display:inline-flex;align-items:center;gap:0.5rem;height:2.75rem;padding:0 1.5rem;border-radius:4px;font-weight:600;background:hsl(var(--foreground));color:#fff;transition:background 0.2s,transform 0.2s}
+.btn-cta:hover{background:hsl(var(--foreground)/0.9);transform:translateY(-1px)}
+.btn-ghost{display:inline-flex;align-items:center;gap:0.5rem;height:2.75rem;padding:0 1.25rem;border-radius:4px;font-weight:500;background:hsl(var(--secondary));color:hsl(var(--foreground));font-size:0.9rem;transition:background 0.2s}
+.btn-ghost:hover{background:hsl(var(--muted))}
+
+.icon{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:inline-block;vertical-align:middle}
+
+/* Modal */
+.modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal.open{display:flex}
+.modal .scrim{position:absolute;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);animation:fadeIn 0.2s}
+.modal .dialog{position:relative;background:#fff;border-radius:1rem;max-width:32rem;width:100%;max-height:90vh;overflow:hidden;border:1px solid hsl(var(--border)/0.6);box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);animation:zoomIn 0.2s;display:flex;flex-direction:column}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes zoomIn{from{opacity:0;transform:scale(0.96)}to{opacity:1;transform:scale(1)}}
+
+.close{position:absolute;top:1rem;right:1rem;padding:0.5rem;border-radius:0.5rem;color:hsl(var(--muted-foreground));transition:background 0.2s;z-index:5}
+.close:hover{background:hsl(var(--secondary))}
+
+.body{padding:2rem;overflow-y:auto}
+.eyerow{display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;font-weight:500;color:hsl(var(--muted-foreground));margin-bottom:1rem}
+.eyerow svg{width:14px;height:14px}
+.body h2{font-size:1.5rem;font-weight:700;margin-bottom:0.25rem}
+.body .lede{font-size:0.875rem;color:hsl(var(--muted-foreground));margin-bottom:1.5rem}
+
+.grid-2{display:grid;grid-template-columns:1fr;gap:1rem}
+@media(min-width:640px){.grid-2{grid-template-columns:1fr 1fr}}
+.grid-2 .span2{grid-column:1/-1}
+.field{display:flex;flex-direction:column;gap:0.375rem}
+.field label{font-size:0.75rem;font-weight:500;color:hsl(var(--muted-foreground))}
+.field label .opt{color:hsl(var(--muted-foreground)/0.5)}
+.field input,.field textarea{padding:0.625rem 0.875rem;border:1px solid hsl(var(--border));border-radius:0.5rem;background:#fff;transition:border-color 0.15s,box-shadow 0.15s}
+.field input{height:2.5rem;padding:0 0.875rem}
+.field textarea{min-height:88px;resize:none;line-height:1.5}
+.field input:focus,.field textarea:focus{outline:none;border-color:hsl(var(--foreground)/0.5);box-shadow:0 0 0 2px hsl(var(--foreground)/0.05)}
+
+.submit{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;width:100%;height:2.75rem;padding:0 1.5rem;border-radius:4px;background:hsl(var(--foreground));color:#fff;font-weight:600;margin-top:1.5rem;transition:background 0.2s,opacity 0.2s}
+.submit:disabled{opacity:0.4;cursor:not-allowed}
+.submit:hover:not(:disabled){background:hsl(var(--foreground)/0.9)}
+
+/* confirmation */
+.confirm{text-align:center;padding:2.5rem 2rem}
+.check-circle{margin:0 auto 1.25rem;width:3.5rem;height:3.5rem;border-radius:50%;background:hsl(var(--accent)/0.1);display:flex;align-items:center;justify-content:center;color:hsl(var(--accent));animation:pop 0.4s ease-out}
+@keyframes pop{from{transform:scale(0.4);opacity:0}to{transform:scale(1);opacity:1}}
+.check-circle svg{width:28px;height:28px;stroke-width:2.5;stroke:currentColor;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.confirm h2{margin-bottom:0.5rem;font-size:1.5rem;font-weight:700}
+.confirm p{font-size:0.875rem;color:hsl(var(--muted-foreground));max-width:26rem;margin:0 auto 1.5rem}
+.confirm strong{color:hsl(var(--foreground));font-weight:600}
+.confirm .done-btn{display:inline-flex;align-items:center;justify-content:center;height:2.75rem;padding:0 1.5rem;border-radius:4px;background:hsl(var(--foreground));color:#fff;font-weight:600}
+.confirm .done-btn:hover{background:hsl(var(--foreground)/0.9)}
+
+/* preview-only step jumper */
+.jumper{display:flex;gap:0.375rem;background:#fff;border:1px solid hsl(var(--border));border-radius:9999px;padding:0.375rem;box-shadow:0 4px 24px -8px rgba(0,0,0,0.08)}
+.jumper button{padding:0.45rem 0.9rem;border-radius:9999px;font-size:0.78rem;font-weight:600;color:hsl(var(--muted-foreground));transition:all 0.2s}
+.jumper button.active{background:hsl(var(--foreground));color:#fff}
+.jumper button:hover:not(.active){background:hsl(var(--secondary))}
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <p class="eyebrow">Component Preview</p>
+  <h1>Discovery Workshop modal</h1>
+  <p>Two-state lead capture for our AI Worker discovery & shaping workshops: longer intake form (with focus area + free-text notes) → confirmation. Triggered from the "Other Departments" page.</p>
+  <div class="cta-row">
+    <button class="btn-cta" onclick="openDiscovery()">
+      <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+      Request more information
+    </button>
+  </div>
+</div>
+
+<div class="modal" id="discovery" role="dialog" aria-modal="true" aria-labelledby="dwHeading">
+  <div class="scrim" onclick="closeDiscovery()"></div>
+  <div class="dialog">
+    <button class="close" onclick="closeDiscovery()" aria-label="Close">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+
+    <!-- Preview-only step jumper -->
+    <div style="display:flex;justify-content:center;padding:1rem 1.5rem 0">
+      <div class="jumper">
+        <button id="jumpForm" class="active" onclick="goState('form')">1 · Form</button>
+        <button id="jumpDone" onclick="goState('done')">2 · Confirmed</button>
+      </div>
+    </div>
+
+    <!-- Form state -->
+    <div class="body" id="stateForm">
+      <div class="eyerow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        Discovery &amp; shaping workshop
+      </div>
+      <h2 id="dwHeading">Request more information</h2>
+      <p class="lede">Tell us a little about your team and we'll be in touch with details on our AI Worker discovery and shaping workshops.</p>
+      <div class="grid-2">
+        <div class="field span2"><label>Full name</label><input id="d-name" placeholder="Jane Doe" maxlength="100"></div>
+        <div class="field"><label>Work email</label><input id="d-email" type="email" placeholder="jane@company.com" maxlength="255"></div>
+        <div class="field"><label>Company</label><input id="d-company" placeholder="Acme Inc." maxlength="100"></div>
+        <div class="field span2"><label>Job title</label><input id="d-title" placeholder="VP Operations" maxlength="100"></div>
+        <div class="field span2"><label>Function or workflow in mind <span class="opt">(optional)</span></label><input id="d-focus" placeholder="e.g. HR onboarding, vendor ops, contract review" maxlength="200"></div>
+        <div class="field span2"><label>Anything else? <span class="opt">(optional)</span></label><textarea id="d-notes" placeholder="A sentence or two on what you're hoping to explore." maxlength="1000"></textarea></div>
+      </div>
+      <button class="submit" id="dSubmit" onclick="goState('done')" disabled>
+        Request more information
+        <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+
+    <!-- Confirmation state -->
+    <div class="confirm" id="stateDone" style="display:none">
+      <div class="check-circle"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <h2 id="confirmTitle">We'll be in touch, there.</h2>
+      <p>An EverWorker operator will reach out to <strong id="confirmEmail">you</strong> with details on our discovery and shaping workshops.</p>
+      <button class="done-btn" onclick="closeDiscovery()">Done</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function openDiscovery(){ goState('form'); document.getElementById('discovery').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeDiscovery(){
+  document.getElementById('discovery').classList.remove('open');
+  document.body.style.overflow='';
+  setTimeout(()=>{
+    ['d-name','d-email','d-company','d-title','d-focus','d-notes'].forEach(id=>document.getElementById(id).value='');
+    validate(); goState('form');
+  },200);
+}
+function goState(s){
+  document.getElementById('stateForm').style.display = s==='form'?'block':'none';
+  document.getElementById('stateDone').style.display = s==='done'?'block':'none';
+  document.getElementById('jumpForm').classList.toggle('active', s==='form');
+  document.getElementById('jumpDone').classList.toggle('active', s==='done');
+  if(s==='done'){
+    const name = (document.getElementById('d-name').value || 'there').split(' ')[0];
+    document.getElementById('confirmTitle').textContent = "We'll be in touch, " + name + ".";
+    document.getElementById('confirmEmail').textContent = document.getElementById('d-email').value || 'you';
+  }
+}
+function validate(){
+  const ok = ['d-name','d-email','d-company','d-title'].every(id=>document.getElementById(id).value.trim());
+  document.getElementById('dSubmit').disabled = !ok;
+}
+['d-name','d-email','d-company','d-title'].forEach(id=>document.getElementById(id).addEventListener('input',validate));
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDiscovery(); });
+</script>
+</body>
+</html>

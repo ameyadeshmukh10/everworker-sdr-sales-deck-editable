@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SDR AI Worker — Double Your Pipeline | EverWorker</title>
+<meta name="description" content="The SDR AI Worker for CROs and sales teams. Researches, qualifies, personalizes outreach and books meetings 24/7 across email, LinkedIn and webchat.">
+<link rel="preconnect" href="https://cdn.simpleicons.org">
+  {# Stylesheet #}
+  <link rel="stylesheet" href="{{ get_asset_url("./sdr-full.css") }}">
+</head><body>
+<!-- NAVBAR -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">EverWorker</a>
+    <div class="nav-links">
+      <div class="nav-item" data-dd="marketing">
+        <button class="nav-btn">Marketing<svg class="icon chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="dropdown"><div class="dropdown-inner">
+          <a class="dropdown-cta" href="/marketing">Marketing Solutions</a>
+          <p class="dropdown-label">Core workers</p>
+          <a class="dropdown-link" href="/marketing/seo"><div class="name">SEO/AEO/GEO AI Worker</div><div class="role">Rankings &amp; organic growth</div></a>
+          <a class="dropdown-link" href="/marketing/advertising"><div class="name">Advertising AI Worker</div><div class="role">Paid media at scale</div></a>
+          <a class="dropdown-link" href="/marketing/content"><div class="name">Content Marketing AI Worker</div><div class="role">Long-form assets that scale</div></a>
+        </div></div>
+      </div>
+      <div class="nav-item" data-dd="sales">
+        <button class="nav-btn">Sales<svg class="icon chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="dropdown"><div class="dropdown-inner">
+          <a class="dropdown-cta" href="/sales">Sales Solutions</a>
+          <p class="dropdown-label">Core workers</p>
+          <a class="dropdown-link" href="/sales/sdr"><div class="name">SDR AI Worker</div><div class="role">Instant lead qualification</div></a>
+          <a class="dropdown-link" href="/sales/playbook"><div class="name">Sales Playbook AI Worker</div><div class="role">Context-driven talk tracks</div></a>
+          <a class="dropdown-link" href="/sales/pipeline"><div class="name">Pipeline Reporting AI Worker</div><div class="role">Real-time deal intelligence</div></a>
+        </div></div>
+      </div>
+      <div class="nav-item" data-dd="finance">
+        <button class="nav-btn">Finance<svg class="icon chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="dropdown"><div class="dropdown-inner">
+          <a class="dropdown-cta" href="/finance">Finance Solutions</a>
+          <p class="dropdown-label">Core workers</p>
+          <a class="dropdown-link" href="/finance/accounts-payable"><div class="name">Accts. Payable AI Worker</div><div class="role">Zero-touch invoice processing</div></a>
+          <a class="dropdown-link" href="/finance/accounts-receivable"><div class="name">Accts. Receivable AI Worker</div><div class="role">Automated collections</div></a>
+          <a class="dropdown-link" href="/finance/cash-flow"><div class="name">Cash Flow AI Worker</div><div class="role">Forecasts and protects liquidity</div></a>
+        </div></div>
+      </div>
+      <a href="/other-departments" class="nav-flat">Other depts.</a>
+      <div class="nav-item" data-dd="how">
+        <button class="nav-btn">How it works<svg class="icon chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="dropdown" style="width:300px"><div class="dropdown-inner">
+          <a class="dropdown-link" href="/how-it-works"><div class="name">How it works</div><div class="role">Our four-step partnership</div></a>
+          <a class="dropdown-link" href="/services"><div class="name">Services</div><div class="role">Discovery, shaping, enablement</div></a>
+          <a class="dropdown-link" href="/our-team"><div class="name">Our story &amp; team</div><div class="role">The story and people behind EverWorker</div></a>
+        </div></div>
+      </div>
+    </div>
+    <button class="btn btn-destructive nav-cta" onclick="openBookDemo()">Book a demo</button>
+    <button class="menu-toggle" onclick="toggleMobile()" aria-label="Menu"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+  </div>
+</nav>
+
+<div class="mobile-sheet" id="mobileSheet">
+  <div class="scrim" onclick="toggleMobile()"></div>
+  <div class="panel">
+    <div class="group"><p>Marketing</p><a href="/marketing/seo">SEO/AEO/GEO AI Worker</a><a href="/marketing/advertising">Advertising AI Worker</a><a href="/marketing/content">Content Marketing AI Worker</a></div>
+    <div class="group"><p>Sales</p><a href="/sales/sdr">SDR AI Worker</a><a href="/sales/playbook">Sales Playbook AI Worker</a><a href="/sales/pipeline">Pipeline Reporting AI Worker</a></div>
+    <div class="group"><p>Finance</p><a href="/finance/accounts-payable">Accts. Payable AI Worker</a><a href="/finance/accounts-receivable">Accts. Receivable AI Worker</a><a href="/finance/cash-flow">Cash Flow AI Worker</a></div>
+    <div class="group"><p>How it works</p><a href="/how-it-works">Our approach</a><a href="/services">Services</a><a href="/our-team">Our story &amp; team</a></div>
+    <a href="/other-departments" style="font-size:1.125rem;font-weight:500">Other depts.</a>
+    <button class="btn btn-destructive" onclick="toggleMobile();openBookDemo()" style="width:100%">Book a demo</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="eyebrow reveal">Meet The SDR AI Worker</p>
+  <h1 class="reveal d1"><span style="color:hsl(var(--foreground))">Double your pipeline.</span><br><span class="hero-gradient-text">This quarter.</span></h1>
+  <p class="sub reveal d2">EverWorker is the AI SDR for CROs and sales teams. It works directly on your CRM, signals, and sequencing tool to run end-to-end prospecting plays and deliver meetings — without you needing to ask. Generate 3x to 5x more meetings per sales rep without hiring more headcount.</p>
+  <div class="reveal d3"><button class="btn btn-foreground" onclick="openBookDemo()">Book a demo<svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
+  <div class="logo-marquee-wrap reveal d4">
+    <p class="label">Trusted by revenue teams scaling output without scaling headcount</p>
+    <div class="logo-marquee" id="heroMarquee"></div>
+  </div>
+</section>
+
+<!-- FLOW OVERVIEW -->
+<section class="sec">
+  <h2 class="reveal">SDR work,<br>on <span class="hero-gradient-text">end-to-end autopilot.</span></h2>
+  <div class="flow-overview reveal d1" style="margin-top:3rem">
+    <div class="flow-row" id="flowRowDesktop"></div>
+    <div class="flow-col flow-col-mobile" id="flowRowMobile"></div>
+    <div class="flow-sublabels"><span>24/7 Always-On</span><span>45-Day Deployment</span><span>Logs to Your CRM</span></div>
+  </div>
+</section>
+
+<!-- DIAGRAM 1 — Lead Funnel -->
+<section class="sec" style="padding-top:1rem;padding-bottom:1rem">
+  <h2 class="reveal">Turn leads into meetings<br><span class="hero-gradient-text">automatically.</span></h2>
+  <p class="lead reveal d1" style="margin-top:1.25rem">EverWorker works around the clock as your dedicated AI SDR. <strong>It analyzes signal data in your CRM, researches and sequences contacts in real time before they go cold, and gets you proactive always-on speed to lead.</strong> Multi-channel outreach across email, LinkedIn, and webchat lands against your entire signal intelligence layer as it emerges, so you never miss an opportunity.</p>
+</section>
+<div class="img-frame-wrap"><div class="img-frame" id="diag1Frame">
+  <div class="orb" style="width:120%;height:120%;background:#9FB7C4;top:60%;left:20%;opacity:0.32"></div>
+  <div class="orb" style="width:110%;height:110%;background:#C9DDE0;top:-10%;left:95%;opacity:0.45"></div>
+  <div class="orb" style="width:130%;height:130%;background:#A8BDC8;top:100%;left:80%;opacity:0.28"></div>
+  <div class="wash"></div><div class="glass"></div><div class="ring"></div>
+  <div class="stage stage-desktop" id="diag1Desktop"></div>
+  <div class="stage stage-mobile" id="diag1Mobile"></div>
+</div></div>
+
+<!-- DIAGRAM 2 — Find your ideal leads -->
+<section class="sec" style="padding-top:1rem;padding-bottom:1rem">
+  <h2 class="reveal">Find your <span class="hero-gradient-text">ideal leads.</span></h2>
+  <p class="lead reveal d1" style="margin-top:1.25rem">Skip the spreadsheets. Stop waiting for revops or sales reps to import contact data into your CRM. <strong>EverWorker instantly populates your CRM with buying-group members from in-market accounts, analyzing your account and prospect-level signal intelligence in real time.</strong> Trigger-based workflows populate in-market accounts with business contacts and route them into the AI SDR — so your signal intelligence is always on and always actioned.</p>
+</section>
+<div class="img-frame-wrap"><div class="img-frame" id="diag2Frame">
+  <div class="orb" style="width:115%;height:115%;background:#B8D4C1;top:55%;left:25%;opacity:0.32"></div>
+  <div class="orb" style="width:105%;height:105%;background:#D4E5D0;top:-10%;left:90%;opacity:0.42"></div>
+  <div class="orb" style="width:125%;height:125%;background:#A8C4B5;top:95%;left:80%;opacity:0.3"></div>
+  <div class="wash"></div><div class="glass"></div><div class="ring"></div>
+  <div class="stage" id="diag2Stage"></div>
+</div></div>
+
+<!-- DIAGRAM 3 — Identify in-market accounts -->
+<section class="sec" style="padding-top:1rem;padding-bottom:1rem">
+  <h2 class="reveal">Identify <span class="hero-gradient-text">in-market accounts.</span></h2>
+  <p class="lead reveal d1" style="margin-top:1.25rem"><strong>EverWorker creates a personalized signal intelligence layer that handles the essential account intent enrichment automatically.</strong> Actionable insight on each signal. Accounts evaluating you on your website. Technographic install base. Company news. Hiring signals. Delivered on your preferred schedule, while you stay informed and in control.</p>
+</section>
+<div class="img-frame-wrap" style="padding-bottom:5rem"><div class="img-frame" id="diag3Frame">
+  <div class="orb" style="width:105%;height:105%;background:#C58195;top:-10%;left:-5%;opacity:0.22"></div>
+  <div class="orb" style="width:115%;height:115%;background:#9FBAC4;top:90%;left:85%;opacity:0.32"></div>
+  <div class="orb" style="width:90%;height:90%;background:#B8C9B8;top:55%;left:45%;opacity:0.18"></div>
+  <div class="wash"></div><div class="glass"></div><div class="ring"></div>
+  <div class="stage" id="diag3Stage"></div>
+</div></div>
+
+<!-- ONBOARD -->
+<section class="onboard">
+  <div class="onboard-inner">
+    <h2 class="reveal">Live on your GTM stack,<br><span class="hero-gradient-text">in days.</span></h2>
+    <p class="lead reveal d1">Onboarding is hands-on and fast. We tune the worker to how your team actually sells — wired into your systems, fluent in your playbook, and producing pipeline inside the first sprint.</p>
+    <ul class="bullets reveal d2">
+      <li><span class="dot"></span><span class="txt">Calibrated to your ICP and qualification bar</span></li>
+      <li><span class="dot"></span><span class="txt">Trained on your playbook, voice and objections</span></li>
+      <li><span class="dot"></span><span class="txt">Wired into your CRM, inbox and sequencer</span></li>
+      <li><span class="dot"></span><span class="txt">Grounded in your knowledge base for every reply</span></li>
+    </ul>
+    <div class="integrations">
+      <p>Built to work with the tools you already run</p>
+      <div class="marquee"><div class="marquee-inner" id="integrationsMarquee"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote">
+  <p class="q reveal">"We replaced an entire outsourced SDR vendor and doubled qualified meetings in the first quarter. The AI worker is on-brand, on-message, and never sleeps."</p>
+  <div class="who reveal d1">
+    <div class="avatar">A</div>
+    <div class="meta"><div class="name">Alex</div><div class="role">VP Sales · Mid-market SaaS</div></div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta"><div class="final-cta-inner"><div class="final-cta-card reveal">
+  <h2>Ready to 2X your meetings?</h2>
+  <p>See the SDR AI Worker run on your actual inbound flow. Live demo, your data, your playbook.</p>
+  <button class="btn btn-foreground" style="background:#fff;color:hsl(var(--foreground))" onclick="openBookDemo()">Book a demo<svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+</div></div></section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <h3>EverWorker</h3>
+      <ul class="footer-legal">
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Use</a></li>
+        <li><a href="#">Cookie Policy</a></li>
+      </ul>
+    </div>
+    <div class="footer-cols">
+      <div class="footer-col"><h4>Departments</h4><ul><li><a href="/marketing">Marketing</a></li><li><a href="/sales">Sales</a></li><li><a href="/finance">Finance</a></li></ul></div>
+      <div class="footer-col"><h4>Workers</h4><ul><li><a href="/sales/sdr">SDR AI Worker</a></li><li><a href="/sales/playbook">Sales Playbook</a></li><li><a href="/sales/pipeline">Pipeline Reporting</a></li><li><a href="/marketing/seo">SEO/AEO/GEO</a></li><li><a href="/marketing/advertising">Advertising</a></li><li><a href="/marketing/content">Content Marketing</a></li></ul></div>
+      <div class="footer-col"><h4>Resources</h4><ul><li><a href="#">AI Academy</a></li><li><a href="#">Events</a></li><li><a href="#">Blog</a></li><li><a href="#">Trust Center</a></li></ul></div>
+      <div class="footer-col"><h4>Company</h4><ul><li><a href="/our-team">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li></ul></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 EverWorker</p>
+    <div class="socials">
+      <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3v9zM6.5 8.25A1.75 1.75 0 1 1 8.3 6.5a1.78 1.78 0 0 1-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19a.66.66 0 0 0 0 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg></a>
+    </div>
+  </div>
+  <div class="footer-banner">EverWorker</div>
+</footer>
+
+<!-- BOOK DEMO MODAL (kept identical to other exports) -->
+<div class="modal" id="bookDemo">
+  <div class="scrim" onclick="closeBookDemo()"></div>
+  <div class="dialog">
+    <div class="head">
+      <div class="progress">
+        <div class="pips"><div class="pip active" id="pip1"></div><div class="pip" id="pip2"></div><div class="pip" id="pip3"></div></div>
+        <span class="step-name" id="stepName">About you</span>
+      </div>
+      <span class="meta">Demo · 30 min</span>
+      <button class="close" onclick="closeBookDemo()" aria-label="Close"><svg class="icon" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="body" id="step1">
+      <h2>Tell us about yourself</h2>
+      <p class="lede">A few details so we can tailor the demo to your team.</p>
+      <div class="grid-2">
+        <div class="field span2"><label>Full name</label><input id="f-name" placeholder="Jane Doe" maxlength="100"></div>
+        <div class="field"><label>Work email</label><input id="f-email" type="email" placeholder="jane@company.com" maxlength="255"></div>
+        <div class="field"><label>Phone <span class="opt">(optional)</span></label><input id="f-phone" type="tel" placeholder="+1 (555) 000-0000" maxlength="30"></div>
+        <div class="field"><label>Company</label><input id="f-company" placeholder="Acme Inc." maxlength="100"></div>
+        <div class="field"><label>Job title</label><input id="f-title" placeholder="VP Operations" maxlength="100"></div>
+        <div class="field span2"><label>What are you interested in? <span class="opt">(optional)</span></label><input id="f-interest" placeholder="e.g. SDR AI Worker" maxlength="200" value="SDR AI Worker"></div>
+      </div>
+      <div class="actions" style="justify-content:flex-end">
+        <button class="next" id="toStep2" onclick="goStep(2)" disabled>Continue<svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+    <div class="body" id="step2" style="display:none">
+      <h2>Select a date and time</h2>
+      <p class="lede">30-minute demo · America / New York</p>
+      <div class="cal-wrap">
+        <div>
+          <div class="cal-head">
+            <button class="cal-nav" id="prevMonth" onclick="changeMonth(-1)"><svg class="icon" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <p id="calLabel"></p>
+            <button class="cal-nav" onclick="changeMonth(1)"><svg class="icon" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+          </div>
+          <div class="dow"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+          <div class="cells" id="calCells"></div>
+        </div>
+        <div class="times">
+          <p class="label" id="timeLabel">Select a date</p>
+          <div id="timeList"></div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="back" onclick="goStep(1)"><svg class="icon" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> Back</button>
+        <button class="next" id="toStep3" onclick="goStep(3)" disabled>Confirm booking<svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+    <div class="confirm" id="step3" style="display:none">
+      <div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <h2 id="confirmTitle">You're booked.</h2>
+      <p>We've sent a calendar invite to <strong id="confirmEmail"></strong>. An EverWorker operator will join you to walk through your AI workforce.</p>
+      <div class="summary">
+        <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span id="confirmDate"></span></div>
+        <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span id="confirmTime"></span></div>
+      </div>
+      <div style="margin-top:2rem"><button class="next" onclick="closeBookDemo()" style="display:inline-flex">Done</button></div>
+    </div>
+  </div>
+</div>
+  {# Scripts #}
+  <script src="{{ get_asset_url("./sdr-full.js") }}" defer></script>
+</body></html>

@@ -10,6 +10,8 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+export-deck
+export-deck-technographics
 *.local
 
 # Editor directories and files

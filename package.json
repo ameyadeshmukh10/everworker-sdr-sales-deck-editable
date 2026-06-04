@@ -7,6 +7,12 @@
     "dev": "vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
+    "build:deck": "vite build --config vite.config.deck.ts && node scripts/finalize-deck.mjs",
+    "export:pdf": "node scripts/export-deck-pdf.mjs",
+    "export:deck": "npm run build:deck && npm run export:pdf",
+    "build:deck-tech": "vite build --config vite.config.deck-technographics.ts && node scripts/finalize-deck-technographics.mjs",
+    "export:pdf-tech": "node scripts/export-deck-technographics-pdf.mjs",
+    "export:deck-tech": "npm run build:deck-tech && npm run export:pdf-tech",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
@@ -84,11 +90,13 @@
     "globals": "^15.15.0",
     "jsdom": "^20.0.3",
     "lovable-tagger": "^1.1.13",
+    "pdf-lib": "^1.17.1",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",
     "vite": "^5.4.19",
+    "vite-plugin-singlefile": "^2.1.0",
     "vitest": "^3.2.4"
   }
 }

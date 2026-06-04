@@ -11,6 +11,8 @@ export type Slide = {
   title: string;
   /** Section name for grouping the progress dots and wayfinding. */
   section?: string;
+  /** Reference/appendix slides: excluded from the main progress count + dots. */
+  appendix?: boolean;
   render: () => React.ReactNode;
 };
 
@@ -88,10 +90,17 @@ const DeckShell = ({ slides }: { slides: Slide[] }) => {
   }, [wakeChrome, index]);
 
   const slide = slides[index];
+  const isAppendix = !!slide.appendix;
+  const mainCount = slides.filter((s) => !s.appendix).length;
+  const apxCount = slides.length - mainCount;
+  const posInMain = slides.slice(0, index + 1).filter((s) => !s.appendix).length;
+  const posInApx = slides.slice(0, index + 1).filter((s) => s.appendix).length;
 
-  // Group consecutive slides by section for the progress-dot clusters.
+  // Group consecutive MAIN slides by section for the progress-dot clusters.
+  // Appendix slides are excluded so the dots + count reflect only the main arc.
   const groups: { section?: string; items: number[] }[] = [];
   slides.forEach((s, i) => {
+    if (s.appendix) return;
     const last = groups[groups.length - 1];
     if (last && last.section === s.section) last.items.push(i);
     else groups.push({ section: s.section, items: [i] });
@@ -156,8 +165,17 @@ const DeckShell = ({ slides }: { slides: Slide[] }) => {
           </div>
 
           <span className="tabular-nums text-[12px] font-semibold tracking-wide text-white/60 whitespace-nowrap text-center">
-            {slide.section ? <span className="text-white/45">{slide.section} · </span> : null}
-            {index + 1} / {slides.length}
+            {isAppendix ? (
+              <>
+                <span className="text-white/45">Appendix · </span>
+                {posInApx} / {apxCount}
+              </>
+            ) : (
+              <>
+                {slide.section ? <span className="text-white/45">{slide.section} · </span> : null}
+                {posInMain} / {mainCount}
+              </>
+            )}
           </span>
 
           <button

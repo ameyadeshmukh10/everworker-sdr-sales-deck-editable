@@ -16,12 +16,39 @@ npm run dev
 
 Then open:
 
-- **The deck:** http://localhost:8080/deck
+- **The SDR deck:** http://localhost:8080/deck
+- **The technographics deck:** http://localhost:8080/deck-technographics — a second deck (the
+  deep-dive behind the SDR Worker's Signal Intelligence), reusing the same framework. Registry:
+  `src/pages/TechnographicsDeckPage.tsx`; slides are `src/components/deck/slides/Tech*.tsx`.
 - The marketing site: http://localhost:8080/
 
 **Presenting the deck:** `→` / `Space` next · `←` back · `Home` / `End` jump to ends ·
 `F` fullscreen · click a progress dot to jump to any section. The bottom chrome shows your
 section + position (e.g. "Outreach · 7 / 17") and auto-hides when the mouse is idle.
+
+## Export it to share with reps
+
+Turn the deck into **standalone files** a rep can open with no server, no install, no internet:
+
+```bash
+npm install        # first time only
+npm run export:deck # builds both the HTML and the PDF
+```
+
+This produces, in `export-deck/` (git-ignored — it's regenerated build output):
+
+- **`EverWorker-SDR-Deck.html`** (~2.7 MB) — a single self-contained file. Everything (JS, CSS,
+  all 7 Gilroy fonts, every image) is inlined. Double-click it to open the **full interactive
+  deck** in any browser — same keyboard nav and animations as `/deck`, fully offline. Email it,
+  drop it in Slack/Drive, done.
+- **`EverWorker-SDR-Deck.pdf`** (17 landscape pages, one per slide) — a flat fallback for emailing
+  or presenting from a PDF viewer. Animations are frozen to their final frame.
+
+Run them individually with `npm run build:deck` (HTML only) or `npm run export:pdf` (PDF only —
+needs the HTML built first). How it works: a separate build target (`vite.config.deck.ts` +
+`deck.html` → `src/deck-main.tsx`) bundles **only** the deck into one file via
+`vite-plugin-singlefile`; `scripts/export-deck-pdf.mjs` drives that file with Playwright to make
+the PDF. None of this touches the live site or the `/deck` route.
 
 ## Where the deck lives
 

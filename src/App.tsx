@@ -26,6 +26,7 @@ import HowItWorksPage from "./pages/HowItWorksPage.tsx";
 import PlatformPage from "./pages/PlatformPage.tsx";
 import UiElementsPage from "./pages/UiElementsPage.tsx";
 import DeckPage from "./pages/DeckPage.tsx";
+import TechnographicsDeckPage from "./pages/TechnographicsDeckPage.tsx";
 import OtherDepartmentsPage from "./pages/OtherDepartmentsPage.tsx";
 import OurTeamPage from "./pages/OurTeamPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -68,6 +69,7 @@ const App = () => (
           <Route path="/platform" element={<PlatformPage />} />
           <Route path="/ui-elements" element={<UiElementsPage />} />
           <Route path="/deck" element={<DeckPage />} />
+          <Route path="/deck-technographics" element={<TechnographicsDeckPage />} />
           <Route path="/other-departments" element={<OtherDepartmentsPage />} />
           <Route path="/our-team" element={<OurTeamPage />} />
           <Route path="/finance" element={<FinancePage />} />

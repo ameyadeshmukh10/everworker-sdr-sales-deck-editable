@@ -27,6 +27,8 @@ import PlatformPage from "./pages/PlatformPage.tsx";
 import UiElementsPage from "./pages/UiElementsPage.tsx";
 import DeckPage from "./pages/DeckPage.tsx";
 import TechnographicsDeckPage from "./pages/TechnographicsDeckPage.tsx";
+import HomeV2Page from "./pages/HomeV2Page.tsx";
+import HowItBuiltPage from "./pages/HowItBuiltPage.tsx";
 import OtherDepartmentsPage from "./pages/OtherDepartmentsPage.tsx";
 import OurTeamPage from "./pages/OurTeamPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -68,6 +70,8 @@ const App = () => (
           <Route path="/how-it-works" element={<HowItWorksPage />} />
           <Route path="/platform" element={<PlatformPage />} />
           <Route path="/ui-elements" element={<UiElementsPage />} />
+          <Route path="/home-v2" element={<HomeV2Page />} />
+          <Route path="/how-its-built" element={<HowItBuiltPage />} />
           <Route path="/deck" element={<DeckPage />} />
           <Route path="/deck-technographics" element={<TechnographicsDeckPage />} />
           <Route path="/other-departments" element={<OtherDepartmentsPage />} />

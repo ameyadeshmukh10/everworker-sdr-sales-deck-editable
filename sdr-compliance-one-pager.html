@@ -29,12 +29,12 @@
     --sheet-shadow: 0 24px 48px -28px rgba(15,40,32,.25);
     --logo-badge: #0E151D;
     --logo-letters: #F8F8F8;
-    --fs-body: 13.5px;
-    --fs-small: 12px;
-    --fs-tiny: 10.5px;
-    --fs-h1: 30px;
-    --pad: 46px;
-    --gap: 26px;
+    --fs-body: 15px;
+    --fs-small: 13.5px;
+    --fs-tiny: 11px;
+    --fs-h1: 32px;
+    --pad: 56px;
+    --gap: 40px;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -80,11 +80,11 @@
     color: var(--ink);
     font-family: "Manrope", "Gilroy", system-ui, -apple-system, sans-serif;
     font-size: var(--fs-body);
-    line-height: 1.5;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
   }
   .sheet {
-    max-width: 920px;
+    max-width: 960px;
     margin: 40px auto;
     background: var(--sheet);
     border: 1px solid var(--line);
@@ -101,69 +101,65 @@
   .brand { display: flex; align-items: center; gap: 10px; }
   .brand svg { display: block; height: 22px; width: auto; }
   .brand-name { font-weight: 800; font-size: 15px; letter-spacing: -0.01em; }
-  .doc-meta {
-    font-size: var(--fs-tiny); font-weight: 700; color: var(--muted);
-    text-transform: uppercase; letter-spacing: 0.16em; text-align: right;
-  }
   h1 {
     font-size: var(--fs-h1); font-weight: 800; letter-spacing: -0.02em;
-    line-height: 1.05; margin: 22px 0 0; text-wrap: balance;
+    line-height: 1.05; margin: 28px 0 0; text-wrap: balance;
   }
   h1 .grad {
     background: linear-gradient(90deg, #1C826E, #33B690);
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
   .thesis {
-    margin: 12px 0 0; max-width: 62ch; color: var(--muted);
-    font-size: 14px; line-height: 1.55;
+    margin: 14px 0 0; max-width: 64ch; color: var(--muted);
+    font-size: 15px; line-height: 1.6;
   }
   .thesis strong { color: var(--ink); font-weight: 700; }
 
   /* ---------- commitments strip ---------- */
   .commitments {
-    display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px;
-    margin-top: 26px; padding: 16px 18px;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px;
+    margin-top: 32px; padding: 20px 22px;
     background: var(--chip-bg); border-radius: 0.75rem;
   }
-  .commit { display: flex; align-items: flex-start; gap: 8px; }
+  .commit { display: flex; align-items: flex-start; gap: 9px; }
   .check {
-    flex: none; width: 16px; height: 16px; margin-top: 1px;
+    flex: none; width: 17px; height: 17px; margin-top: 2px;
     border-radius: 4px; background: var(--check-grad);
     box-shadow: var(--mint-glow);
     display: inline-flex; align-items: center; justify-content: center;
   }
   .check svg { width: 10px; height: 10px; }
-  .commit span { font-size: 11.5px; font-weight: 700; line-height: 1.3; }
+  .commit span { font-size: 12.5px; font-weight: 700; line-height: 1.4; }
 
   /* ---------- sections ---------- */
   .grid {
     display: grid; grid-template-columns: 1fr 1fr;
-    gap: var(--gap); margin-top: 30px;
+    gap: var(--gap); margin-top: 40px;
   }
-  section { border-top: 2px solid var(--line); padding-top: 14px; break-inside: avoid; }
+  section { border-top: 2px solid var(--line); padding-top: 20px; break-inside: avoid; }
   .span2 { grid-column: 1 / -1; }
   .col { display: flex; flex-direction: column; gap: var(--gap); }
   .sec-title {
-    display: flex; align-items: baseline; gap: 8px; margin: 0 0 8px;
-    font-size: 11px; font-weight: 800; text-transform: uppercase;
+    display: flex; align-items: baseline; gap: 9px; margin: 0 0 14px;
+    font-size: 12px; font-weight: 800; text-transform: uppercase;
     letter-spacing: 0.14em;
   }
   .sec-title .num { color: var(--accent); font-variant-numeric: tabular-nums; }
-  .lead { margin: 0 0 8px; font-size: var(--fs-small); color: var(--muted); }
+  .lead { margin: 0 0 12px; font-size: var(--fs-small); color: var(--muted); line-height: 1.6; }
   .lead strong { color: var(--ink); }
   ul { margin: 0; padding: 0; list-style: none; }
   li {
-    position: relative; padding-left: 14px; margin: 5px 0;
-    font-size: var(--fs-small); line-height: 1.45;
+    position: relative; padding-left: 17px; margin: 9px 0;
+    font-size: var(--fs-small); line-height: 1.55;
   }
   li::before {
-    content: ""; position: absolute; left: 0; top: 7px;
+    content: ""; position: absolute; left: 0; top: 8px;
     width: 5px; height: 5px; border-radius: 1px; background: var(--accent);
   }
   li strong { font-weight: 700; }
   .footnote {
-    margin: 10px 0 0; padding: 8px 10px; font-size: 11.5px; color: var(--muted);
-    background: var(--chip-bg); border-radius: 6px;
+    margin: 16px 0 0; padding: 11px 14px; font-size: 12.5px; color: var(--muted);
+    background: var(--chip-bg); border-radius: 6px; line-height: 1.55;
   }
   .footnote strong { color: var(--ink); }
 
@@ -171,24 +167,25 @@
   .tbl-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: var(--fs-small); }
   th {
-    text-align: left; font-size: 9.5px; font-weight: 800; color: var(--muted);
+    text-align: left; font-size: 10.5px; font-weight: 800; color: var(--muted);
     text-transform: uppercase; letter-spacing: 0.14em;
-    padding: 0 10px 6px 0; border-bottom: 1px solid var(--line-strong);
+    padding: 0 12px 8px 0; border-bottom: 1px solid var(--line-strong);
   }
-  td { padding: 5px 10px 5px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
   td:first-child { font-weight: 700; white-space: nowrap; }
   td:last-child { color: var(--muted); }
 
   /* ---------- suppression pipeline ---------- */
   .pipeline {
-    display: flex; flex-wrap: wrap; align-items: center; gap: 5px;
-    margin: 12px 0 0;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    margin: 16px 0 0;
   }
+  .seg { display: flex; align-items: center; gap: 8px; }
   .step {
-    padding: 4px 10px; border: 1px solid var(--line-strong); border-radius: 999px;
-    font-size: 10.5px; font-weight: 700; white-space: nowrap;
+    padding: 6px 13px; border: 1px solid var(--line-strong); border-radius: 999px;
+    font-size: 12px; font-weight: 700; white-space: nowrap; line-height: 1.35;
   }
-  .step small { display: block; font-size: 9.5px; font-weight: 600; color: var(--muted); }
+  .step small { display: block; font-size: 10px; font-weight: 600; color: var(--muted); }
   .step.terminal {
     background: var(--pill-grad); border-color: transparent; color: #fff;
     box-shadow: 0 0 18px rgba(82,254,191,.30);
@@ -196,37 +193,17 @@
   .step.terminal small { color: rgba(255,255,255,.75); }
   .step-sep { color: var(--muted); font-size: 12px; }
 
-  /* ---------- sign-off ---------- */
-  .signoff {
-    margin-top: 30px; padding-top: 16px; border-top: 2px solid var(--line);
-    display: grid; grid-template-columns: 1.6fr 1fr 0.7fr; gap: 10px 22px; align-items: end;
-  }
-  .signoff-label {
-    grid-column: 1 / -1; font-size: 11px; font-weight: 800;
-    text-transform: uppercase; letter-spacing: 0.14em;
-  }
-  .field .blank { border-bottom: 1px solid var(--line-strong); height: 26px; }
-  .field label {
-    display: block; margin-top: 4px; font-size: 9.5px; font-weight: 700;
-    color: var(--muted); text-transform: uppercase; letter-spacing: 0.14em;
-  }
-  .colophon {
-    grid-column: 1 / -1; margin: 6px 0 0; font-size: 11px; color: var(--muted);
-    line-height: 1.5;
-  }
-
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
   @media (max-width: 720px) {
     :root { --pad: 24px; }
     .sheet { margin: 12px; }
-    .grid, .signoff { grid-template-columns: 1fr; }
+    .grid { grid-template-columns: 1fr; }
     .commitments { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
-    .doc-meta { text-align: left; }
   }
 
-  /* ---------- print: one page, light, exact color ---------- */
+  /* ---------- print: two comfortable pages, light, exact color ---------- */
   @media print {
     :root, :root[data-theme="dark"] {
       --bg: #fff; --page-bg: #fff; --sheet: #fff;
@@ -235,36 +212,25 @@
       --line: rgba(15,28,24,.12); --line-strong: rgba(15,28,24,.4);
       --chip-bg: #F1F5F3; --sheet-shadow: none;
       --logo-badge: #0E151D; --logo-letters: #F8F8F8;
-      --fs-body: 9.5px; --fs-small: 9px; --fs-tiny: 8px;
-      --fs-h1: 19px; --pad: 0px; --gap: 11px;
+      --fs-body: 12px; --fs-small: 11px; --fs-tiny: 9.5px;
+      --fs-h1: 26px; --pad: 0px; --gap: 26px;
     }
-    @page { size: letter; margin: 9mm 11mm; }
-    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; line-height: 1.35; }
+    @page { size: letter; margin: 12mm 14mm; }
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; line-height: 1.5; }
     .sheet { max-width: none; margin: 0; border: 0; border-radius: 0; }
-    .brand svg { height: 16px; }
-    .brand-name { font-size: 12px; }
-    .commitments { margin-top: 10px; padding: 8px 10px; gap: 8px; border-radius: 6px; }
-    .commit span { font-size: 8px; }
-    .check { width: 11px; height: 11px; margin-top: 0; box-shadow: none; }
-    h1 { margin-top: 8px; }
-    .thesis { font-size: 9.5px; margin-top: 5px; line-height: 1.4; }
-    .grid { margin-top: 11px; }
-    section { padding-top: 8px; }
-    .sec-title { margin-bottom: 5px; font-size: 9px; }
-    .lead { margin-bottom: 5px; }
-    li { margin: 2.5px 0; padding-left: 11px; line-height: 1.35; }
-    li::before { top: 5px; width: 4px; height: 4px; }
-    .step { font-size: 8px; padding: 3px 8px; }
-    .step small { font-size: 7px; }
-    .pipeline { margin-top: 6px; }
-    .footnote { font-size: 8px; margin-top: 6px; padding: 4px 7px; }
-    .signoff { margin-top: 11px; padding-top: 9px; gap: 6px 16px; }
-    .signoff-label { font-size: 9px; }
-    .field .blank { height: 15px; }
-    .field label { font-size: 7.5px; margin-top: 2px; }
-    .colophon { font-size: 7.5px; margin-top: 2px; }
-    th { font-size: 7px; padding-bottom: 3px; }
-    td { padding: 2px 8px 2px 0; }
+    .grid-b { break-before: page; margin-top: 0; }
+    h1 { margin-top: 14px; }
+    .thesis { margin-top: 10px; }
+    .commitments { margin-top: 20px; padding: 14px 16px; }
+    .grid { margin-top: 24px; }
+    section { padding-top: 16px; }
+    .check { box-shadow: none; }
+    .commit span { font-size: 10px; }
+    .step { font-size: 10px; padding: 5px 11px; }
+    .step small { font-size: 8.5px; }
+    .footnote { font-size: 10px; }
+    th { font-size: 9px; }
+    td { padding: 5px 10px 5px 0; }
   }
 </style>
 </head>
@@ -281,7 +247,6 @@
         </svg>
         <span class="brand-name">EverWorker</span>
       </div>
-      <div class="doc-meta">Technical review &amp; sign-off · September 2026 · v1.0</div>
     </div>
     <h1>AI SDR — <span class="grad">Data Compliance &amp; Security</span></h1>
     <p class="thesis">The AI SDR is an autonomous prospecting worker built around <strong>data minimization</strong>: it stores only the contact fields needed to deliver outreach, writes campaign content exclusively from publicly available information, and runs as a <strong>fully isolated single-tenant deployment</strong> per client.</p>
@@ -354,6 +319,10 @@
       </section>
     </div>
 
+  </div>
+
+  <div class="grid grid-b">
+
     <section>
       <h2 class="sec-title"><span class="num">4</span> Deployment — single tenant, isolated data</h2>
       <ul>
@@ -382,27 +351,15 @@
       <p class="lead">Do-not-contact status is enforced automatically and continuously. Contacts can opt out via links or written replies on email or LinkedIn; any contact flagged in the client's CRM (opted out, booked a meeting, became an opportunity) is excluded at every stage.</p>
       <div class="pipeline">
         <span class="step">Flag raised<small>opt-out or CRM status</small></span>
-        <span class="step-sep" aria-hidden="true">→</span>
-        <span class="step">Dropped at CRM pull</span>
-        <span class="step-sep" aria-hidden="true">→</span>
-        <span class="step">Re-checked at enrollment</span>
-        <span class="step-sep" aria-hidden="true">→</span>
-        <span class="step">30-min sweep<small>stops in-flight, all channels</small></span>
-        <span class="step-sep" aria-hidden="true">→</span>
-        <span class="step terminal">Audit ledger + CRM timeline</span>
+        <span class="seg"><span class="step-sep" aria-hidden="true">→</span><span class="step">Dropped at CRM pull</span></span>
+        <span class="seg"><span class="step-sep" aria-hidden="true">→</span><span class="step">Re-checked at enrollment</span></span>
+        <span class="seg"><span class="step-sep" aria-hidden="true">→</span><span class="step">30-min sweep<small>stops in-flight, all channels</small></span></span>
+        <span class="seg"><span class="step-sep" aria-hidden="true">→</span><span class="step terminal">Audit ledger + CRM timeline</span></span>
       </div>
       <p class="footnote"><strong>Suppression is one-way:</strong> a stopped sequence for an opted-out contact stays stopped and can never resume for that contact.</p>
     </section>
 
   </div>
-
-  <footer class="signoff">
-    <div class="signoff-label">Technical sign-off</div>
-    <div class="field"><div class="blank"></div><label>Name &amp; title</label></div>
-    <div class="field"><div class="blank"></div><label>Signature</label></div>
-    <div class="field"><div class="blank"></div><label>Date</label></div>
-    <p class="colophon">Prepared by EverWorker · Pipeline Generation AI Solution — SDR AI Worker. Section numbers follow the full compliance document (v1.0, September 2026). Any item above can be verified with a walkthrough of the deployment and its data stores.</p>
-  </footer>
 
 </div>
 </body>

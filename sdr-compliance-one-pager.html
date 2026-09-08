@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI SDR Compliance &amp; Security</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #F9FAF8;
+    --page-bg:
+      radial-gradient(ellipse 50% 38% at 12% 0%, rgba(34,130,111,.08), transparent 60%),
+      radial-gradient(ellipse 40% 32% at 88% 8%, rgba(59,130,246,.06), transparent 60%),
+      radial-gradient(ellipse 45% 40% at 70% 100%, rgba(217,180,90,.05), transparent 60%),
+      #F9FAF8;
+    --sheet: #FFFFFF;
+    --ink: #0F1C18;
+    --muted: #66706C;
+    --accent: #22826F;
+    --accent-strong: #1C826E;
+    --mint: #52FEBF;
+    --line: rgba(15,28,24,.09);
+    --line-strong: rgba(15,28,24,.28);
+    --chip-bg: #F1F5F3;
+    --pill-grad: linear-gradient(135deg, #22826F, #3BC493);
+    --check-grad: linear-gradient(135deg, #22826F, #52FEBF);
+    --mint-glow: 0 0 14px rgba(82,254,191,.45);
+    --sheet-shadow: 0 24px 48px -28px rgba(15,40,32,.25);
+    --logo-badge: #0E151D;
+    --logo-letters: #F8F8F8;
+    --fs-body: 15px;
+    --fs-small: 13.5px;
+    --fs-tiny: 11px;
+    --fs-h1: 32px;
+    --pad: 56px;
+    --gap: 40px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0D110F;
+      --page-bg:
+        radial-gradient(ellipse 60% 45% at 50% 0%, rgba(82,254,191,.07), transparent 60%),
+        #0D110F;
+      --sheet: #141A17;
+      --ink: #F3F5F2;
+      --muted: #97A29C;
+      --accent: #3BB894;
+      --accent-strong: #3BB894;
+      --line: rgba(243,245,242,.10);
+      --line-strong: rgba(243,245,242,.34);
+      --chip-bg: rgba(243,245,242,.06);
+      --sheet-shadow: 0 24px 48px -28px rgba(0,0,0,.55);
+      --logo-badge: #F3F5F2;
+      --logo-letters: #10151C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0D110F;
+    --page-bg:
+      radial-gradient(ellipse 60% 45% at 50% 0%, rgba(82,254,191,.07), transparent 60%),
+      #0D110F;
+    --sheet: #141A17;
+    --ink: #F3F5F2;
+    --muted: #97A29C;
+    --accent: #3BB894;
+    --accent-strong: #3BB894;
+    --line: rgba(243,245,242,.10);
+    --line-strong: rgba(243,245,242,.34);
+    --chip-bg: rgba(243,245,242,.06);
+    --sheet-shadow: 0 24px 48px -28px rgba(0,0,0,.55);
+    --logo-badge: #F3F5F2;
+    --logo-letters: #10151C;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--page-bg);
+    color: var(--ink);
+    font-family: "Manrope", "Gilroy", system-ui, -apple-system, sans-serif;
+    font-size: var(--fs-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .sheet {
+    max-width: 960px;
+    margin: 40px auto;
+    background: var(--sheet);
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    box-shadow: var(--sheet-shadow);
+    padding: var(--pad);
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead-row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand svg { display: block; height: 22px; width: auto; }
+  .brand-name { font-weight: 800; font-size: 15px; letter-spacing: -0.01em; }
+  h1 {
+    font-size: var(--fs-h1); font-weight: 800; letter-spacing: -0.02em;
+    line-height: 1.05; margin: 28px 0 0; text-wrap: balance;
+  }
+  h1 .grad {
+    background: linear-gradient(90deg, #1C826E, #33B690);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .thesis {
+    margin: 14px 0 0; max-width: 64ch; color: var(--muted);
+    font-size: 15px; line-height: 1.6;
+  }
+  .thesis strong { color: var(--ink); font-weight: 700; }
+
+  /* ---------- commitments strip ---------- */
+  .commitments {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px;
+    margin-top: 32px; padding: 20px 22px;
+    background: var(--chip-bg); border-radius: 0.75rem;
+  }
+  .commit { display: flex; align-items: flex-start; gap: 9px; }
+  .check {
+    flex: none; width: 17px; height: 17px; margin-top: 2px;
+    border-radius: 4px; background: var(--check-grad);
+    box-shadow: var(--mint-glow);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .check svg { width: 10px; height: 10px; }
+  .commit span { font-size: 12.5px; font-weight: 700; line-height: 1.4; }
+
+  /* ---------- sections ---------- */
+  .grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: var(--gap); margin-top: 40px;
+  }
+  section { border-top: 2px solid var(--line); padding-top: 20px; break-inside: avoid; }
+  .span2 { grid-column: 1 / -1; }
+  .col { display: flex; flex-direction: column; gap: var(--gap); }
+  .sec-title {
+    display: flex; align-items: baseline; gap: 9px; margin: 0 0 14px;
+    font-size: 12px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+  .sec-title .num { color: var(--accent); font-variant-numeric: tabular-nums; }
+  .lead { margin: 0 0 12px; font-size: var(--fs-small); color: var(--muted); line-height: 1.6; }
+  .lead strong { color: var(--ink); }
+  ul { margin: 0; padding: 0; list-style: none; }
+  li {
+    position: relative; padding-left: 17px; margin: 9px 0;
+    font-size: var(--fs-small); line-height: 1.55;
+  }
+  li::before {
+    content: ""; position: absolute; left: 0; top: 8px;
+    width: 5px; height: 5px; border-radius: 1px; background: var(--accent);
+  }
+  li strong { font-weight: 700; }
+  .footnote {
+    margin: 16px 0 0; padding: 11px 14px; font-size: 12.5px; color: var(--muted);
+    background: var(--chip-bg); border-radius: 6px; line-height: 1.55;
+  }
+  .footnote strong { color: var(--ink); }
+
+  /* ---------- data table ---------- */
+  .tbl-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: var(--fs-small); }
+  th {
+    text-align: left; font-size: 10.5px; font-weight: 800; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.14em;
+    padding: 0 12px 8px 0; border-bottom: 1px solid var(--line-strong);
+  }
+  td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td:first-child { font-weight: 700; white-space: nowrap; }
+  td:last-child { color: var(--muted); }
+
+  /* ---------- suppression pipeline ---------- */
+  .pipeline {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    margin: 16px 0 0;
+  }
+  .seg { display: flex; align-items: center; gap: 8px; }
+  .step {
+    padding: 6px 13px; border: 1px solid var(--line-strong); border-radius: 999px;
+    font-size: 12px; font-weight: 700; white-space: nowrap; line-height: 1.35;
+  }
+  .step small { display: block; font-size: 10px; font-weight: 600; color: var(--muted); }
+  .step.terminal {
+    background: var(--pill-grad); border-color: transparent; color: #fff;
+    box-shadow: 0 0 18px rgba(82,254,191,.30);
+  }
+  .step.terminal small { color: rgba(255,255,255,.75); }
+  .step-sep { color: var(--muted); font-size: 12px; }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+  @media (max-width: 720px) {
+    :root { --pad: 24px; }
+    .sheet { margin: 12px; }
+    .grid { grid-template-columns: 1fr; }
+    .commitments { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  }
+
+  /* ---------- print: two comfortable pages, light, exact color ---------- */
+  @media print {
+    :root, :root[data-theme="dark"] {
+      --bg: #fff; --page-bg: #fff; --sheet: #fff;
+      --ink: #0F1C18; --muted: #5A6360;
+      --accent: #22826F; --accent-strong: #1C826E;
+      --line: rgba(15,28,24,.12); --line-strong: rgba(15,28,24,.4);
+      --chip-bg: #F1F5F3; --sheet-shadow: none;
+      --logo-badge: #0E151D; --logo-letters: #F8F8F8;
+      --fs-body: 12px; --fs-small: 11px; --fs-tiny: 9.5px;
+      --fs-h1: 26px; --pad: 0px; --gap: 26px;
+    }
+    @page { size: letter; margin: 12mm 14mm; }
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; line-height: 1.5; }
+    .sheet { max-width: none; margin: 0; border: 0; border-radius: 0; }
+    .grid-b { break-before: page; margin-top: 0; }
+    /* background-clip:text produces broken clip groups in PDF output — use solid color */
+    h1 .grad { background: none; color: var(--accent-strong); }
+    .step.terminal { box-shadow: none; }
+    h1 { margin-top: 14px; }
+    .thesis { margin-top: 10px; }
+    .commitments { margin-top: 20px; padding: 14px 16px; }
+    .grid { margin-top: 24px; }
+    section { padding-top: 16px; }
+    .check { box-shadow: none; }
+    .commit span { font-size: 10px; }
+    .step { font-size: 10px; padding: 5px 11px; }
+    .step small { font-size: 8.5px; }
+    .footnote { font-size: 10px; }
+    th { font-size: 9px; }
+    td { padding: 5px 10px 5px 0; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <div class="masthead-row">
+      <div class="brand">
+        <svg viewBox="0 0 397 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="EverWorker mark">
+          <path d="M302.14 3L290.44 24.96V3H240.8L229.1 24.96V3L73.31 3.43L6 197.48H212.24L223.94 175.09V197.48H324.57L391.88 3H302.14Z" style="fill:var(--logo-badge)"/>
+          <path d="M172.88 70.31L180.2 49.2H106.42L72.81 146.11C72 148.44 73.73 150.86 76.19 150.86H144.94L152.26 129.75H102.44L109.09 110.59H158.91L166.23 89.48H116.41L123.06 70.32H172.88V70.31Z" style="fill:var(--logo-letters)"/>
+          <path d="M302.7 49.2L265.78 118.54V49.2H241.53L204.47 118.8V49.2H180.24V147.28C180.24 149.26 181.84 150.86 183.82 150.86H211.63L245.07 88.09V150.86H272.99L326.95 49.2H302.7Z" style="fill:var(--logo-letters)"/>
+        </svg>
+        <span class="brand-name">EverWorker</span>
+      </div>
+    </div>
+    <h1>AI SDR — <span class="grad">Data Compliance &amp; Security</span></h1>
+    <p class="thesis">The AI SDR is an autonomous prospecting worker built around <strong>data minimization</strong>: it stores only the contact fields needed to deliver outreach, writes campaign content exclusively from publicly available information, and runs as a <strong>fully isolated single-tenant deployment</strong> per client.</p>
+  </header>
+
+  <div class="commitments" role="list" aria-label="Summary of commitments">
+    <div class="commit" role="listitem">
+      <span class="check"><svg viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg"><path d="M2 6.5L4.8 9.2L10 3.2" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span>Only outreach-essential fields stored</span>
+    </div>
+    <div class="commit" role="listitem">
+      <span class="check"><svg viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg"><path d="M2 6.5L4.8 9.2L10 3.2" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span>Content from public sources only</span>
+    </div>
+    <div class="commit" role="listitem">
+      <span class="check"><svg viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg"><path d="M2 6.5L4.8 9.2L10 3.2" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span>Private LLM endpoints — never used for training</span>
+    </div>
+    <div class="commit" role="listitem">
+      <span class="check"><svg viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg"><path d="M2 6.5L4.8 9.2L10 3.2" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span>Single-tenant, fully isolated deployments</span>
+    </div>
+    <div class="commit" role="listitem">
+      <span class="check"><svg viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg"><path d="M2 6.5L4.8 9.2L10 3.2" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span>Opt-outs enforced automatically &amp; auditably</span>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <section>
+      <h2 class="sec-title"><span class="num">1</span> Data minimization — what is stored</h2>
+      <p class="lead">All contact records originate from the client's own CRM (inbound) or B2B enrichment providers (outbound). <strong>The CRM remains the system of record throughout.</strong></p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Field</th><th>Why it's needed</th></tr></thead>
+          <tbody>
+            <tr><td>Full name</td><td>Addressing the recipient</td></tr>
+            <tr><td>Business email</td><td>Email delivery</td></tr>
+            <tr><td>Job title / position</td><td>Persona-appropriate messaging</td></tr>
+            <tr><td>Company &amp; domain</td><td>Account research (public sources)</td></tr>
+            <tr><td>LinkedIn profile URL</td><td>LinkedIn outreach delivery</td></tr>
+            <tr><td>Country</td><td>Email scheduling</td></tr>
+            <tr><td>Marketing fields</td><td>Touchpoint context (e.g. whitepaper download, webinar registration)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="footnote"><strong>Never collected or stored:</strong> phone numbers, home or personal addresses, personal (non-business) email accounts, or sensitive / special-category personal data of any kind.</p>
+    </section>
+
+    <div class="col">
+      <section>
+        <h2 class="sec-title"><span class="num">2</span> Campaign content — public sources only</h2>
+        <ul>
+          <li><strong>Account level:</strong> company news, the public website, public DNS records, posted job openings.</li>
+          <li><strong>Client-provided:</strong> approved messaging &amp; positioning, case studies, publicly shared marketing materials.</li>
+          <li><strong>Contact level:</strong> inferences from job title; LinkedIn data only where the profile is public; statements publicly attributable to the contact.</li>
+        </ul>
+        <p class="footnote">Third-party enrichment for company signals receives the <strong>company domain only</strong> — personal data is never sent to enrichment providers.</p>
+      </section>
+
+      <section>
+        <h2 class="sec-title"><span class="num">3</span> LLM usage — private endpoints, no training</h2>
+        <ul>
+          <li><strong>Private per-client endpoint</strong> with dedicated credentials; prompts and outputs are never shared across clients.</li>
+          <li>Submitted data is <strong>not used to train models</strong>, per the commercial API terms in effect.</li>
+          <li><strong>Transient processing:</strong> minimal fields + public research in, drafted copy out — stored only inside the client's deployment.</li>
+          <li>EverWorker manages endpoint procurement, security, billing, and operation — <strong>no access to your LLMs required</strong>.</li>
+        </ul>
+      </section>
+    </div>
+
+  </div>
+
+  <div class="grid grid-b">
+
+    <section>
+      <h2 class="sec-title"><span class="num">4</span> Deployment — single tenant, isolated data</h2>
+      <ul>
+        <li><strong>Dedicated stack per client</strong> on Railway: own application service, databases, and storage volume — no shared layer between clients.</li>
+        <li><strong>Private networking:</strong> databases are reachable only over the project's private network, never exposed publicly.</li>
+        <li><strong>Per-client credentials everywhere:</strong> every integration (CRM, sending platforms, LLM API) uses isolated keys scoped to that client.</li>
+        <li><strong>No cross-client data plane:</strong> no shared pipeline, queue, or analytics store — leakage is impossible by construction.</li>
+        <li>EverWorker manages the entire infrastructure layer — <strong>no access to your email accounts or sequencing tools required</strong>.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="sec-title"><span class="num">5</span> Access &amp; security controls</h2>
+      <ul>
+        <li><strong>TLS/HTTPS</strong> on all traffic to third-party APIs and between services.</li>
+        <li>Operations console behind <strong>authenticated login</strong>: salted password hashes, signed session tokens.</li>
+        <li>Inbound webhooks authenticated with a <strong>shared secret</strong>; rejected without it.</li>
+        <li>API secrets live in platform service configuration — <strong>never in source code</strong> or repositories.</li>
+        <li>CRM access via a <strong>scoped private-app token</strong> (least privilege), set up during onboarding.</li>
+        <li>The web console reads the pipeline database <strong>read-only</strong>; writes go through controlled pipeline jobs only.</li>
+      </ul>
+    </section>
+
+    <section class="span2">
+      <h2 class="sec-title"><span class="num">6</span> Opt-out &amp; suppression</h2>
+      <p class="lead">Do-not-contact status is enforced automatically and continuously. Contacts can opt out via links or written replies on email or LinkedIn; any contact flagged in the client's CRM (opted out, booked a meeting, became an opportunity) is excluded at every stage.</p>
+      <div class="pipeline">
+        <span class="step">Flag raised<small>opt-out or CRM status</small></span>
+        <span class="seg"><span class="step-sep" aria-hidden="true">→</span><span class="step">Dropped at CRM pull</span></span>
+        <span class="seg"><span class="step-sep" aria-hidden="true">→</span><span class="step">Re-checked at enrollment</span></span>
+        <span class="seg"><span class="step-sep" aria-hidden="true">→</span><span class="step">30-min sweep<small>stops in-flight, all channels</small></span></span>
+        <span class="seg"><span class="step-sep" aria-hidden="true">→</span><span class="step terminal">Audit ledger + CRM timeline</span></span>
+      </div>
+      <p class="footnote"><strong>Suppression is one-way:</strong> a stopped sequence for an opted-out contact stays stopped and can never resume for that contact.</p>
+    </section>
+
+  </div>
+
+</div>
+</body>
+</html>

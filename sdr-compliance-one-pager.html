@@ -219,6 +219,9 @@
     body { -webkit-print-color-adjust: exact; print-color-adjust: exact; line-height: 1.5; }
     .sheet { max-width: none; margin: 0; border: 0; border-radius: 0; }
     .grid-b { break-before: page; margin-top: 0; }
+    /* background-clip:text produces broken clip groups in PDF output — use solid color */
+    h1 .grad { background: none; color: var(--accent-strong); }
+    .step.terminal { box-shadow: none; }
     h1 { margin-top: 14px; }
     .thesis { margin-top: 10px; }
     .commitments { margin-top: 20px; padding: 14px 16px; }
